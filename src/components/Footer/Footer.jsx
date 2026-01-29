@@ -1,0 +1,105 @@
+import { Link } from 'react-router-dom'
+import { footerData } from '../../data/mockData'
+import {
+  StyledFooter,
+  FooterContainer,
+  FooterLogoWrapper,
+  FooterLogoLink,
+  FooterLogoImage,
+  FooterGrid,
+  FooterColumn,
+  ColumnTitle,
+  ColumnList,
+  ColumnLink,
+  SocialRow,
+  SocialLink,
+  Copyright,
+} from './Footer.styled'
+
+const SocialIcon = ({ name }) => {
+  const icons = {
+    facebook: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    ),
+    instagram: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+      </svg>
+    ),
+    twitter: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    ),
+  }
+  return icons[name] || null
+}
+
+export default function Footer() {
+  const { institutional, help, account, social, copyright } = footerData
+
+  return (
+    <StyledFooter>
+      <FooterContainer>
+        <FooterLogoWrapper>
+          <FooterLogoLink as={Link} to="/">
+            <FooterLogoImage src="/logos/LogosColor/1.png" alt="Artilheiro Store" />
+          </FooterLogoLink>
+        </FooterLogoWrapper>
+        <FooterGrid>
+          <FooterColumn>
+            <ColumnTitle>Institucional</ColumnTitle>
+            <ColumnList>
+              {institutional.map((item) => (
+                <li key={item.path}>
+                  <ColumnLink as={Link} to={item.path}>
+                    {item.label}
+                  </ColumnLink>
+                </li>
+              ))}
+            </ColumnList>
+          </FooterColumn>
+          <FooterColumn>
+            <ColumnTitle>Ajuda</ColumnTitle>
+            <ColumnList>
+              {help.map((item) => (
+                <li key={item.path}>
+                  <ColumnLink as={Link} to={item.path}>
+                    {item.label}
+                  </ColumnLink>
+                </li>
+              ))}
+            </ColumnList>
+          </FooterColumn>
+          <FooterColumn>
+            <ColumnTitle>Minha Conta</ColumnTitle>
+            <ColumnList>
+              {account.map((item) => (
+                <li key={item.path}>
+                  <ColumnLink as={Link} to={item.path}>
+                    {item.label}
+                  </ColumnLink>
+                </li>
+              ))}
+            </ColumnList>
+          </FooterColumn>
+          <FooterColumn>
+            <ColumnTitle>Redes Sociais</ColumnTitle>
+            <SocialRow>
+              {social.map((item) => (
+                <SocialLink key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={item.name}>
+                  <SocialIcon name={item.icon} />
+                </SocialLink>
+              ))}
+            </SocialRow>
+          </FooterColumn>
+        </FooterGrid>
+        <Copyright>{copyright}</Copyright>
+      </FooterContainer>
+    </StyledFooter>
+  )
+}
