@@ -32,12 +32,12 @@ export const FooterLogoLink = styled.a`
 `
 
 export const FooterLogoImage = styled.img`
-  height: 56px;
+  height: 200px !important;
   width: auto;
   object-fit: contain;
 
   @media (min-width: 768px) {
-    height: 64px;
+    height: 200px;
   }
 `
 

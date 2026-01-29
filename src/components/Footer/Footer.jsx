@@ -47,7 +47,7 @@ export default function Footer() {
       <FooterContainer>
         <FooterLogoWrapper>
           <FooterLogoLink as={Link} to="/">
-            <FooterLogoImage src="/logos/LogosColor/1.png" alt="Artilheiro Store" />
+            <FooterLogoImage src="/logos/sem%20fundo/LogoBranca.png" alt="Artilheiro Store" />
           </FooterLogoLink>
         </FooterLogoWrapper>
         <FooterGrid>

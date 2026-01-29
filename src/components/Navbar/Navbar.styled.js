@@ -9,6 +9,13 @@ export const StyledNavbar = styled.nav`
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid #eee;
+  transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+  @media (max-width: 991px) {
+    background: ${({ $scrolled }) => ($scrolled ? '#fff' : 'transparent')};
+    box-shadow: ${({ $scrolled }) => ($scrolled ? '0 1px 3px rgba(0, 0, 0, 0.08)' : 'none')};
+    border-bottom-color: ${({ $scrolled }) => ($scrolled ? '#eee' : 'transparent')};
+  }
 `
 
 export const NavContainer = styled.div`
@@ -100,17 +107,32 @@ export const IconButton = styled.a`
     color: #c41e3a;
     background: rgba(196, 30, 58, 0.06);
   }
+
+  @media (max-width: 991px) {
+    color: ${({ $scrolled }) => ($scrolled ? '#333' : '#fff')};
+
+    &:hover {
+      color: ${({ $scrolled }) => ($scrolled ? '#c41e3a' : 'rgba(255, 255, 255, 0.85)')};
+      background: ${({ $scrolled }) => ($scrolled ? 'rgba(196, 30, 58, 0.06)' : 'rgba(255, 255, 255, 0.1)')};
+    }
+  }
 `
 
 export const MobileMenuButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 10px;
   width: 40px;
   height: 40px;
   color: #333;
   background: transparent;
   border-radius: 8px;
+  transition: color 0.2s;
+
+  @media (max-width: 991px) {
+    color: ${({ $scrolled }) => ($scrolled ? '#333' : '#fff')};
+  }
 
   @media (min-width: 992px) {
     display: none;
@@ -121,11 +143,12 @@ export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  border-top: 1px solid #eee;
-  padding: 1rem;
+  border-top: ${({ $open }) => ($open ? '1px solid #eee' : 'none')};
+  padding: ${({ $open }) => ($open ? '1rem' : '0')};
   max-height: ${({ $open }) => ($open ? '400px' : '0')};
+  min-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.3s ease, padding 0.3s ease, border 0.3s ease;
 
   a {
     padding: 0.75rem 1rem;
