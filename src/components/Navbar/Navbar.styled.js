@@ -12,9 +12,9 @@ export const StyledNavbar = styled.nav`
   transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 
   @media (max-width: 991px) {
-    background: ${({ $scrolled }) => ($scrolled ? '#fff' : 'transparent')};
-    box-shadow: ${({ $scrolled }) => ($scrolled ? '0 1px 3px rgba(0, 0, 0, 0.08)' : 'none')};
-    border-bottom-color: ${({ $scrolled }) => ($scrolled ? '#eee' : 'transparent')};
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-bottom-color: #eee;
   }
 `
 
@@ -93,6 +93,30 @@ export const NavActions = styled.div`
   gap: 0.5rem;
 `
 
+export const CartButtonWrap = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const CartBadge = styled.span`
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #fff;
+  background: #c41e3a;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 export const IconButton = styled.a`
   display: flex;
   align-items: center;
@@ -109,11 +133,11 @@ export const IconButton = styled.a`
   }
 
   @media (max-width: 991px) {
-    color: ${({ $scrolled }) => ($scrolled ? '#333' : '#fff')};
+    color: #333;
 
     &:hover {
-      color: ${({ $scrolled }) => ($scrolled ? '#c41e3a' : 'rgba(255, 255, 255, 0.85)')};
-      background: ${({ $scrolled }) => ($scrolled ? 'rgba(196, 30, 58, 0.06)' : 'rgba(255, 255, 255, 0.1)')};
+      color: #c41e3a;
+      background: rgba(196, 30, 58, 0.06);
     }
   }
 `
@@ -131,7 +155,7 @@ export const MobileMenuButton = styled.button`
   transition: color 0.2s;
 
   @media (max-width: 991px) {
-    color: ${({ $scrolled }) => ($scrolled ? '#333' : '#fff')};
+    color: #333;
   }
 
   @media (min-width: 992px) {

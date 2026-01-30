@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { NavLink, Link } from 'react-router-dom'
 import { navLinks } from '../../data/mockData'
+import { useCart } from '../../context/CartContext'
 import {
   StyledNavbar,
   NavContainer,
@@ -10,6 +11,8 @@ import {
   NavItem,
   NavActions,
   IconButton,
+  CartButtonWrap,
+  CartBadge,
   MobileMenuButton,
   MobileMenu,
 } from './Navbar.styled'
@@ -50,23 +53,12 @@ const CloseIcon = () => (
   </svg>
 )
 
-const SCROLL_THRESHOLD = 20
-
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > SCROLL_THRESHOLD)
-    }
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  const { openMiniCart, itemCount } = useCart()
 
   return (
-    <StyledNavbar $scrolled={isScrolled}>
+    <StyledNavbar>
       <NavContainer>
         <Logo as={NavLink} to="/">
           <LogoImage src="/logos/sem%20fundo/4.png" alt="Artilheiro Store" />
@@ -87,19 +79,23 @@ export default function Navbar() {
         </NavMenu>
 
         <NavActions>
-          <IconButton href="/busca" aria-label="Buscar" $scrolled={isScrolled}>
+          <IconButton href="/busca" aria-label="Buscar">
             <SearchIcon />
           </IconButton>
-          <IconButton href="/carrinho" aria-label="Carrinho" $scrolled={isScrolled}>
-            <CartIcon />
-          </IconButton>
-          <IconButton href="/perfil" aria-label="Perfil" $scrolled={isScrolled}>
+          <CartButtonWrap>
+            <IconButton as="button" type="button" onClick={openMiniCart} aria-label={`Carrinho com ${itemCount} itens`}>
+              <CartIcon />
+            </IconButton>
+            {itemCount > 0 && (
+              <CartBadge aria-hidden="true">{itemCount > 99 ? '99+' : itemCount}</CartBadge>
+            )}
+          </CartButtonWrap>
+          <IconButton href="/perfil" aria-label="Perfil">
             <ProfileIcon />
           </IconButton>
         </NavActions>
 
         <MobileMenuButton
-          $scrolled={isScrolled}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
         >

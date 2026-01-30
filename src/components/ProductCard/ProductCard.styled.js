@@ -43,7 +43,8 @@ export const CardBadge = styled.span`
   text-transform: uppercase;
   color: #fff;
   border-radius: 4px;
-  background: ${({ $type }) => ($type === 'promo' ? '#c41e3a' : '#1a1a1a')};
+  background: ${({ $type }) =>
+    $type === 'promo' ? '#c41e3a' : $type === 'retro' ? '#6b4423' : '#1a1a1a'};
 `
 
 export const CardInfo = styled.div`

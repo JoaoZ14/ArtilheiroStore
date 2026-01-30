@@ -31,7 +31,15 @@ export default function ProductCard({ name, price, originalPrice, image, imageHo
     >
       <CardImageWrapper>
         <CardImage src={displayImage} alt={name} />
-        {badge && <CardBadge $type={badge === 'Promo' ? 'promo' : 'new'}>{badge}</CardBadge>}
+        {badge && (
+          <CardBadge
+            $type={
+              badge === 'Promo' ? 'promo' : badge === 'Retrô' ? 'retro' : 'new'
+            }
+          >
+            {badge}
+          </CardBadge>
+        )}
       </CardImageWrapper>
       <CardInfo>
         <CardName>{name}</CardName>

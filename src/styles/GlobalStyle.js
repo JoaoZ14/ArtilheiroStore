@@ -1,6 +1,10 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
+  :root {
+    --navbar-height: 100px;
+  }
+
   * {
     margin: 0;
     padding: 0;
