@@ -13,13 +13,6 @@ export const staticPages = {
       'Esta página está em construção. Em breve disponibilizaremos formulário, e-mail e telefone para contato.',
     ],
   },
-  ajuda: {
-    title: 'Central de ajuda',
-    paragraphs: [
-      'Aqui você encontra respostas para as principais dúvidas sobre pedidos, entregas, trocas e devoluções.',
-      'Esta página está em construção. Em breve traremos um FAQ completo e canais de atendimento.',
-    ],
-  },
   'politica-de-privacidade': {
     title: 'Política de privacidade',
     paragraphs: [

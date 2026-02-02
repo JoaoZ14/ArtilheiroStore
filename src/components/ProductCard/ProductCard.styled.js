@@ -94,3 +94,10 @@ export const CardOriginalPrice = styled.span`
   color: #999;
   text-decoration: line-through;
 `
+
+export const CardDiscountPercent = styled.span`
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #c41e3a;
+  margin-left: 0.25rem;
+`

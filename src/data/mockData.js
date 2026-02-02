@@ -128,11 +128,11 @@ export const heroData = {
 }
 
 export const promoBannerData = {
-  title: 'Até 40% OFF',
-  subtitle: 'Em camisas selecionadas',
-  ctaLabel: 'Ver ofertas',
-  ctaLink: '/promocoes',
-  image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1920&q=80',
+  title: 'Viva o jogo. Vista a paixão.',
+  subtitle: 'Torça com a camisa dos seus ídolos.',
+  ctaLabel: 'Ver camisas',
+  ctaLink: '/times',
+  image: '/banners/banner_footer.jpg',
 }
 
 // Lista completa de produtos para PLP (com filtros: time, tamanho, preço, promoção)
@@ -509,8 +509,6 @@ export const plpConfig = {
 export const footerData = {
   institutional: [
     { label: 'Sobre nós', path: '/sobre' },
-    { label: 'Lojas', path: '/lojas' },
-    { label: 'Trabalhe conosco', path: '/trabalhe-conosco' },
     { label: 'Contato', path: '/contato' },
   ],
   help: [

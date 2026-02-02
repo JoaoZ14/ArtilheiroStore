@@ -149,12 +149,27 @@ export default function ProductListingPage() {
   const [allProducts, setAllProducts] = useState([])
   const [retryCount, setRetryCount] = useState(0)
 
+  // Sincroniza filtros time/liga com a URL: ao ir para Lancamentos (sem params), limpa time e liga
   useEffect(() => {
-    if (timeFromUrl) setFilters((prev) => ({ ...prev, team: timeFromUrl }))
-  }, [timeFromUrl])
+    setFilters((prev) => ({
+      ...prev,
+      team: timeFromUrl,
+      liga: ligaFromUrl,
+    }))
+  }, [timeFromUrl, ligaFromUrl])
+
+  // Ao trocar de categoria (ex.: clicar em Lançamentos), limpa todos os filtros e aplica config da página
   useEffect(() => {
-    if (ligaFromUrl) setFilters((prev) => ({ ...prev, liga: ligaFromUrl }))
-  }, [ligaFromUrl])
+    setSort(config.sortDefault || 'bestseller')
+    setFilters({
+      liga: ligaFromUrl,
+      team: timeFromUrl,
+      size: '',
+      promoOnly: config.filterPromoOnly || false,
+      priceMin: '',
+      priceMax: '',
+    })
+  }, [plpKey])
 
   // Buscar produtos da API (com filtros server-side: liga, team, search)
   useEffect(() => {

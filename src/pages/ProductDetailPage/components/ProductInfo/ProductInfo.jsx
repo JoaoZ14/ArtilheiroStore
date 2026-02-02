@@ -1,3 +1,4 @@
+import { getDiscountPercentage } from '../../../../utils/price'
 import SizeSelector from '../SizeSelector/SizeSelector'
 import QuantitySelector from '../QuantitySelector/QuantitySelector'
 import AddToCartButton from '../AddToCartButton/AddToCartButton'
@@ -35,6 +36,9 @@ export default function ProductInfo({
 }) {
   const badgeLabel = product?.badge || 'Oficial'
   const isPromo = product?.isPromo && product?.originalPrice
+  const discountPercent = isPromo
+    ? getDiscountPercentage(product.originalPrice, product.price)
+    : null
 
   return (
     <ProductInfoWrap>
@@ -46,7 +50,9 @@ export default function ProductInfo({
         {isPromo && (
           <>
             <PriceOriginal>{formatPrice(product.originalPrice)}</PriceOriginal>
-            <PromoBadge>Promoção</PromoBadge>
+            <PromoBadge>
+              Promoção{discountPercent != null ? ` -${discountPercent}%` : ''}
+            </PromoBadge>
           </>
         )}
       </PriceBlock>

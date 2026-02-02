@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getDiscountPercentage } from '../../utils/price'
 import {
   StyledProductCard,
   CardImageWrapper,
@@ -10,6 +11,7 @@ import {
   CardLiga,
   CardPrice,
   CardOriginalPrice,
+  CardDiscountPercent,
 } from './ProductCard.styled'
 
 function formatPrice(value) {
@@ -22,6 +24,7 @@ function formatPrice(value) {
 export default function ProductCard({ name, price, originalPrice, image, imageHover, badge, link, liga }) {
   const [isHover, setIsHover] = useState(false)
   const displayImage = imageHover && isHover ? imageHover : image
+  const discountPercent = originalPrice ? getDiscountPercentage(originalPrice, price) : null
 
   return (
     <StyledProductCard
@@ -47,7 +50,14 @@ export default function ProductCard({ name, price, originalPrice, image, imageHo
         {liga && <CardLiga>{liga}</CardLiga>}
         <CardPrice>
           {formatPrice(price)}
-          {originalPrice && <CardOriginalPrice>{formatPrice(originalPrice)}</CardOriginalPrice>}
+          {originalPrice && (
+            <>
+              <CardOriginalPrice>{formatPrice(originalPrice)}</CardOriginalPrice>
+              {discountPercent != null && (
+                <CardDiscountPercent>-{discountPercent}%</CardDiscountPercent>
+              )}
+            </>
+          )}
         </CardPrice>
       </CardInfo>
     </StyledProductCard>

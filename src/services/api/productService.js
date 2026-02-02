@@ -41,9 +41,16 @@ function normalizeProduct(apiProduct) {
   // Monta link para PDP
   const link = `/produto/${apiProduct.id}`
   
+  // Preço: se tiver promoPrice, ele vira o preço principal e price vira original (riscado)
+  const hasPromoPrice = apiProduct.promoPrice != null && apiProduct.promoPrice !== ''
+  const price = hasPromoPrice ? Number(apiProduct.promoPrice) : Number(apiProduct.price)
+  const originalPrice = hasPromoPrice
+    ? Number(apiProduct.price)
+    : (apiProduct.originalPrice != null ? Number(apiProduct.originalPrice) : null)
+
   // Badge baseado em promoção ou novidade
   let badge = null
-  if (apiProduct.isPromotion) {
+  if (apiProduct.isPromotion || hasPromoPrice) {
     badge = 'Promo'
   } else if (apiProduct.isNew) {
     badge = 'Novo'
@@ -52,8 +59,8 @@ function normalizeProduct(apiProduct) {
   return {
     id: apiProduct.id,
     name: apiProduct.name,
-    price: apiProduct.price,
-    originalPrice: apiProduct.originalPrice || null,
+    price,
+    originalPrice: originalPrice ?? null,
     image: mainImage,
     imageHover: hoverImage,
     badge,
@@ -64,7 +71,7 @@ function normalizeProduct(apiProduct) {
     category: apiProduct.category || 'nacionais',
     sizes,
     sizeStock,
-    isPromo: apiProduct.isPromotion || false,
+    isPromo: apiProduct.isPromotion || hasPromoPrice,
     salesCount: apiProduct.salesCount || 0,
     createdAt: apiProduct.createdAt || new Date().toISOString(),
     // Campos extras para PDP

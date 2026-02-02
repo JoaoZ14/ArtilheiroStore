@@ -12,6 +12,8 @@ import CheckoutPage from './pages/CheckoutPage/CheckoutPage'
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage'
 import OrderLookupPage from './pages/OrderLookupPage/OrderLookupPage'
 import StaticPage from './pages/StaticPage/StaticPage'
+import HelpPage from './pages/HelpPage/HelpPage'
+import AboutPage from './pages/AboutPage/AboutPage'
 import { staticPages } from './pages/StaticPage/content'
 
 function SearchRedirect() {
@@ -38,9 +40,9 @@ export default function App() {
           <Route path="/checkout/sucesso" element={<CheckoutSuccessPage />} />
           <Route path="/pedido/consultar" element={<OrderLookupPage />} />
           <Route path="/busca" element={<SearchRedirect />} />
-          <Route path="/sobre" element={<StaticPage {...staticPages.sobre} />} />
+          <Route path="/sobre" element={<AboutPage />} />
           <Route path="/contato" element={<StaticPage {...staticPages.contato} />} />
-          <Route path="/ajuda" element={<StaticPage {...staticPages.ajuda} />} />
+          <Route path="/ajuda" element={<HelpPage />} />
           <Route path="/politica-de-privacidade" element={<StaticPage {...staticPages['politica-de-privacidade']} />} />
           <Route path="/termos" element={<StaticPage {...staticPages.termos} />} />
           <Route path="/lojas" element={<StaticPage {...staticPages.lojas} />} />

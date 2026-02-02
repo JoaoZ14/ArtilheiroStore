@@ -17,9 +17,14 @@ import {
   LeagueTitle,
   TeamsGrid,
 } from './TimesPage.styled'
+import { TEAM_IDS } from './TeamsIds'
 
-// Imagens dos times brasileiros
-const TEAM_IMAGES_BRASILEIRAO = {
+// Logos: API-Football (media.api-sports.io). Nome = exatamente como vem no produto.
+// IDs: https://dashboard.api-football.com/soccer/ids/teams
+const API_FOOTBALL_LOGO_BASE = 'https://media.api-sports.io/football/teams'
+
+// Fallback quando não houver ID em TEAM_IDS
+const TEAM_IMAGES_FALLBACK = {
   Flamengo: '/times/Brasileirao/flamengo%20logo.jpg',
   Corinthians: '/times/Brasileirao/corinthians%20logo.jpg',
   Palmeiras: '/times/Brasileirao/Palmeiras.jpg',
@@ -39,8 +44,10 @@ function buildLeagues(products) {
     if (seen.has(key)) continue
     seen.add(key)
 
-    const isBrasileirao = /brasileirão|brasileirao/i.test(liga)
-    const teamImage = isBrasileirao ? TEAM_IMAGES_BRASILEIRAO[p.team] : null
+    const teamId = TEAM_IDS[p.team]
+    const teamImage = teamId
+      ? `${API_FOOTBALL_LOGO_BASE}/${teamId}.png`
+      : TEAM_IMAGES_FALLBACK[p.team] || null
 
     byLiga[liga].push({
       name: p.team,
@@ -70,8 +77,7 @@ export default function TimesPage() {
       try {
         const products = await productService.getAll()
         if (!isMounted) return
-        const leaguesData = buildLeagues(products)
-        setLeagues(leaguesData)
+        setLeagues(buildLeagues(products))
       } catch (error) {
         console.error('Erro ao carregar times:', error)
         setLeagues([])
