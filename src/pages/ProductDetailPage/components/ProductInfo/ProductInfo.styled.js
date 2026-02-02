@@ -78,6 +78,19 @@ export const QuantityCol = styled.div`
 export const CtaWrap = styled.div`
   margin-top: 0.5rem;
   position: relative;
+
+  @media (max-width: 767px) {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-bottom: calc(1rem + var(--safe-area-bottom, 0px));
+    margin-bottom: calc(-1rem - var(--safe-area-bottom, 0px));
+    background: #fff;
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    border-top: 1px solid #f3f4f6;
+  }
 `
 
 export const AddedFeedback = styled.span`

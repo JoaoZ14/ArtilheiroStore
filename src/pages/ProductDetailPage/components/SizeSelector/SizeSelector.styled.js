@@ -19,6 +19,7 @@ export const SizeGrid = styled.div`
 
 export const SizeButton = styled.button`
   min-width: 48px;
+  min-height: 48px;
   height: 48px;
   padding: 0 0.75rem;
   font-size: 0.9375rem;
@@ -33,6 +34,7 @@ export const SizeButton = styled.button`
   border-radius: 6px;
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
   transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
 
   &:hover:not(:disabled) {
     border-color: #1a1a1a;

@@ -1,8 +1,6 @@
 export const navLinks = [
   { label: 'Início', path: '/' },
   { label: 'Times', path: '/times' },
-  { label: 'Brasileirão', path: '/brasileirao' },
-  { label: 'Europeus', path: '/europeus' },
   { label: 'Lançamentos', path: '/lancamentos' },
   { label: 'Promoções', path: '/promocoes' },
 ]
@@ -26,7 +24,7 @@ export const categories = [
     id: 3,
     title: 'Retrô',
     slug: 'retro',
-    image: 'https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=800&q=80',
+    image: '/banners/retro_banner.jpg',
     link: '/categoria/retro',
   },
   {

@@ -3,6 +3,13 @@ import { createGlobalStyle } from 'styled-components'
 export const GlobalStyle = createGlobalStyle`
   :root {
     --navbar-height: 100px;
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --navbar-height: 72px;
+    }
   }
 
   * {
@@ -21,6 +28,10 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     color: #1a1a1a;
     background: #fff;
+  }
+
+  a, button {
+    -webkit-tap-highlight-color: transparent;
   }
 
   a {

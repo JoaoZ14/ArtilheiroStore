@@ -80,6 +80,7 @@ export const SummaryWrap = styled.div`
     left: 0;
     right: 0;
     padding: 1rem;
+    padding-bottom: calc(1rem + var(--safe-area-bottom, 0px));
     background: #fff;
     border-top: 1px solid #e5e7eb;
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);

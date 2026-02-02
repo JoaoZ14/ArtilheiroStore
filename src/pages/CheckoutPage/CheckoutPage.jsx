@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import { useCart } from '../../context/CartContext'
+import { useToast } from '../../context/ToastContext'
+import { orderService } from '../../services/api/orderService'
 import OrderSummary from './components/OrderSummary/OrderSummary'
 import {
   StyledCheckout,
@@ -17,22 +19,22 @@ import {
   Input,
   Row,
   SubmitButton,
-  SuccessWrap,
-  SuccessTitle,
-  SuccessText,
-  BackButton,
+  ButtonSpinner,
   PaymentOption,
   Radio,
   SummaryCol,
   StepIndicator,
+  StepDots,
   StepDot,
+  StepLabel,
 } from './CheckoutPage.styled'
+
+const CHECKOUT_SUCCESS_KEY = 'artilheiro-checkout-success'
 
 const STEPS = [
   { id: 1, title: 'Dados pessoais' },
   { id: 2, title: 'Endereço' },
   { id: 3, title: 'Pagamento' },
-  { id: 4, title: 'Confirmação' },
 ]
 
 function validateStep1(data) {
@@ -54,7 +56,9 @@ function validateStep2(data) {
 export default function CheckoutPage() {
   const navigate = useNavigate()
   const { items, subtotal, itemCount, clearCart } = useCart()
+  const { showError, showSuccess } = useToast()
   const [step, setStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -69,12 +73,10 @@ export default function CheckoutPage() {
   })
 
   useEffect(() => {
-    if (itemCount === 0 && step < 4) {
+    if (itemCount === 0) {
       navigate('/carrinho', { replace: true })
     }
-  }, [itemCount, step, navigate])
-
-  const isSuccessStep = step === 4
+  }, [itemCount, navigate])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -91,13 +93,67 @@ export default function CheckoutPage() {
     if (validateStep2(formData)) setStep(3)
   }
 
-  const handleStep3Submit = (e) => {
+  const handleStep3Submit = async (e) => {
     e.preventDefault()
-    setStep(4)
-    clearCart()
+    if (isSubmitting) return
+    
+    setIsSubmitting(true)
+
+    try {
+      const orderData = {
+        customer: {
+          name: formData.nome,
+          email: formData.email,
+          cpf: formData.cpf,
+        },
+        address: {
+          cep: formData.cep,
+          rua: formData.rua,
+          numero: formData.numero,
+          complemento: formData.complemento,
+          cidade: formData.cidade,
+          estado: formData.estado,
+        },
+        items: items.map(item => ({
+          productId: item.productId,
+          size: item.size,
+          quantity: item.quantity,
+          unitPrice: item.unitPrice,
+        })),
+        total: subtotal,
+      }
+
+      const response = await orderService.createOrder(orderData)
+
+      // Salvar dados do pedido para página de sucesso
+      try {
+        sessionStorage.setItem(
+          CHECKOUT_SUCCESS_KEY,
+          JSON.stringify({
+            orderId: response.orderId,
+            total: response.total,
+          })
+        )
+      } catch (_) {
+        // ignore storage errors
+      }
+
+      // Limpar carrinho e redirecionar
+      clearCart()
+      showSuccess('Pedido realizado com sucesso!')
+      navigate('/checkout/sucesso', { replace: true })
+      
+    } catch (error) {
+      console.error('Erro ao finalizar pedido:', error)
+      showError(
+        error.message || 'Não foi possível finalizar o pedido. Verifique os dados e tente novamente.'
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
-  if (itemCount === 0 && !isSuccessStep) {
+  if (itemCount === 0) {
     return null
   }
 
@@ -107,10 +163,13 @@ export default function CheckoutPage() {
       <CheckoutContainer>
         <CheckoutLayout>
           <StepsCol>
-            <StepIndicator>
-              {STEPS.map((s) => (
-                <StepDot key={s.id} $active={step >= s.id} aria-hidden />
-              ))}
+            <StepIndicator aria-label={`Passo ${step} de 3`}>
+              <StepDots>
+                {STEPS.map((s) => (
+                  <StepDot key={s.id} $active={step >= s.id} aria-hidden />
+                ))}
+              </StepDots>
+              <StepLabel>Passo {step} de 3</StepLabel>
             </StepIndicator>
 
             {step === 1 && (
@@ -148,6 +207,7 @@ export default function CheckoutPage() {
                       id="cpf"
                       name="cpf"
                       type="text"
+                      inputMode="numeric"
                       placeholder="000.000.000-00"
                       value={formData.cpf}
                       onChange={handleChange}
@@ -172,6 +232,8 @@ export default function CheckoutPage() {
                       id="cep"
                       name="cep"
                       type="text"
+                      inputMode="numeric"
+                      autoComplete="postal-code"
                       placeholder="00000-000"
                       value={formData.cep}
                       onChange={handleChange}
@@ -197,6 +259,7 @@ export default function CheckoutPage() {
                         id="numero"
                         name="numero"
                         type="text"
+                        inputMode="numeric"
                         placeholder="Nº"
                         value={formData.numero}
                         onChange={handleChange}
@@ -308,20 +371,11 @@ export default function CheckoutPage() {
                       <Input type="text" placeholder="QR Code será exibido aqui" readOnly disabled />
                     </Field>
                   )}
-                  <SubmitButton type="submit">Finalizar compra</SubmitButton>
+                  <SubmitButton type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
+                    {isSubmitting && <ButtonSpinner aria-hidden />}
+                    {isSubmitting ? 'Processando pedido…' : 'Finalizar compra'}
+                  </SubmitButton>
                 </Form>
-              </StepCard>
-            )}
-
-            {step === 4 && (
-              <StepCard>
-                <SuccessWrap>
-                  <SuccessTitle>Compra realizada com sucesso!</SuccessTitle>
-                  <SuccessText>Obrigado por comprar na Artilheiro Store.</SuccessText>
-                  <BackButton as={Link} to="/">
-                    Voltar para a loja
-                  </BackButton>
-                </SuccessWrap>
               </StepCard>
             )}
           </StepsCol>

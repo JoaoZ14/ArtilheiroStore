@@ -5,11 +5,14 @@ export const GalleryWrap = styled.div`
   flex-direction: column;
   gap: 0.75rem;
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
 `
 
 export const MainImageWrap = styled.div`
   position: relative;
   width: 100%;
+  max-width: 100%;
   aspect-ratio: 1;
   background: #f5f5f5;
   border-radius: 8px;
@@ -19,7 +22,9 @@ export const MainImageWrap = styled.div`
 export const MainImage = styled.img`
   width: 100%;
   height: 100%;
+  max-width: 100%;
   object-fit: cover;
+  display: block;
   transition: transform 0.4s ease;
 
   ${MainImageWrap}:hover & {

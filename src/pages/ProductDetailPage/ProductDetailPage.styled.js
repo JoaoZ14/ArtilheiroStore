@@ -11,6 +11,7 @@ export const PDPContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 1rem 3rem;
+  min-width: 0;
 
   @media (min-width: 768px) {
     padding: 1.5rem 1.5rem 4rem;

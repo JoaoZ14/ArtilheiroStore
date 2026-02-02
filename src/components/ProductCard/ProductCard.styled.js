@@ -8,10 +8,17 @@ export const StyledProductCard = styled.article`
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     transform: translateY(-4px);
+  }
+
+  @media (max-width: 767px) {
+    &:active {
+      opacity: 0.95;
+    }
   }
 `
 
@@ -59,6 +66,17 @@ export const CardName = styled.span`
   font-size: 0.95rem;
   font-weight: 600;
   color: #1a1a1a;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+`
+
+export const CardLiga = styled.span`
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.2;
 `
 
 export const CardPrice = styled.span`

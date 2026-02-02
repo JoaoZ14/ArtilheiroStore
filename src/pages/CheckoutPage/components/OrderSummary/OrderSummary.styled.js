@@ -20,6 +20,7 @@ export const SummaryHeader = styled.button`
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
+  min-height: 44px;
   font-size: 1.125rem;
   font-weight: 700;
   color: #1a1a1a;
@@ -38,6 +39,7 @@ export const SummaryHeader = styled.button`
     cursor: default;
     pointer-events: none;
     border-bottom: 1px solid #e5e7eb;
+    min-height: 0;
   }
 `
 

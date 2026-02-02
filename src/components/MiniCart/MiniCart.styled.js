@@ -7,6 +7,7 @@ export const Overlay = styled.div`
   z-index: 1100;
   opacity: ${({ $open }) => ($open ? 1 : 0)};
   visibility: ${({ $open }) => ($open ? 'visible' : 'hidden')};
+  pointer-events: ${({ $open }) => ($open ? 'auto' : 'none')};
   transition: opacity 0.3s ease, visibility 0.3s ease;
   -webkit-tap-highlight-color: transparent;
 `
@@ -30,7 +31,9 @@ export const Drawer = styled.aside`
     max-width: none;
     border-radius: 16px 16px 0 0;
     top: auto;
-    max-height: 92vh;
+    height: 95vh;
+    max-height: 95vh;
+    min-height: 0;
     transform: ${({ $open }) => ($open ? 'translateY(0)' : 'translateY(100%)')};
   }
 `
@@ -55,12 +58,15 @@ export const CloseButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   color: #6b7280;
   background: transparent;
   border-radius: 8px;
   transition: color 0.2s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     color: #1a1a1a;
@@ -71,15 +77,28 @@ export const CloseButton = styled.button`
     outline: 2px solid #c41e3a;
     outline-offset: 2px;
   }
+
+  @media (min-width: 768px) {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
 `
 
 export const DrawerBody = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 1rem 1.5rem;
+  overflow-x: hidden;
+  padding: 1rem 1.25rem;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  -webkit-overflow-scrolling: touch;
+
+  @media (min-width: 768px) {
+    padding: 1rem 1.5rem;
+  }
 `
 
 export const EmptyState = styled.div`
@@ -132,6 +151,7 @@ export const CtaGroup = styled.div`
 
 export const PrimaryButton = styled.button`
   width: 100%;
+  min-height: 48px;
   height: 52px;
   font-size: 1rem;
   font-weight: 700;
@@ -159,6 +179,7 @@ export const PrimaryButton = styled.button`
 
 export const SecondaryButton = styled.button`
   width: 100%;
+  min-height: 48px;
   height: 48px;
   font-size: 0.9375rem;
   font-weight: 600;

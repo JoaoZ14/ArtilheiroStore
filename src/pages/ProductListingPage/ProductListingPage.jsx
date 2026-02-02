@@ -3,7 +3,11 @@ import { useParams, useLocation, useSearchParams } from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import ProductCard from '../../components/ProductCard/ProductCard'
-import { allProducts, plpConfig } from '../../data/mockData'
+import ProductCardSkeleton from '../../components/ProductCardSkeleton/ProductCardSkeleton'
+import ErrorState from '../../components/ErrorState/ErrorState'
+import { useToast } from '../../context/ToastContext'
+import { productService } from '../../services/api/productService'
+import { plpConfig } from '../../data/mockData'
 import {
   StyledPLP,
   PLPHeader,
@@ -19,6 +23,7 @@ import {
   FilterTitle,
   FilterOption,
   FilterChip,
+  FilterSelect,
   PriceRange,
   PriceInput,
   PLPContent,
@@ -59,6 +64,10 @@ function filterAndSortProducts(products, filters, sort, plpKey) {
     list = list.filter((p) => p.isPromo)
   }
 
+  if (filters.liga) {
+    const ligaLower = filters.liga.toLowerCase()
+    list = list.filter((p) => (p.liga || '').toLowerCase() === ligaLower)
+  }
   if (filters.team) {
     list = list.filter((p) => p.team === filters.team)
   }
@@ -95,17 +104,38 @@ function getUniqueTeams(products) {
   return teams.sort((a, b) => a.localeCompare(b))
 }
 
+function getUniqueLigas(products) {
+  const ligas = [...new Set(products.map((p) => p.liga).filter(Boolean))]
+  return ligas.sort((a, b) => a.localeCompare(b))
+}
+
+function filterProductsBySearchTerm(products, term) {
+  if (!term?.trim()) return products
+  const q = term.trim().toLowerCase()
+  return products.filter(
+    (p) =>
+      p.name?.toLowerCase().includes(q) ||
+      p.team?.toLowerCase().includes(q) ||
+      p.category?.toLowerCase().includes(q) ||
+      p.liga?.toLowerCase().includes(q)
+  )
+}
+
 export default function ProductListingPage() {
   const params = useParams()
   const { pathname } = useLocation()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { showError } = useToast()
   const plpKey = getPlpKey(params, pathname)
   const config = plpConfig[plpKey] || plpConfig.times
 
   const timeFromUrl = searchParams.get('time') || ''
+  const ligaFromUrl = searchParams.get('liga') || ''
+  const searchQuery = searchParams.get('q') ?? ''
 
   const [sort, setSort] = useState(config.sortDefault || 'bestseller')
   const [filters, setFilters] = useState({
+    liga: ligaFromUrl,
     team: timeFromUrl,
     size: '',
     promoOnly: config.filterPromoOnly || false,
@@ -113,22 +143,80 @@ export default function ProductListingPage() {
     priceMax: '',
   })
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [products, setProducts] = useState([])
+  const [allProducts, setAllProducts] = useState([])
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
-    if (timeFromUrl) {
-      setFilters((prev) => ({ ...prev, team: timeFromUrl }))
-    }
+    if (timeFromUrl) setFilters((prev) => ({ ...prev, team: timeFromUrl }))
   }, [timeFromUrl])
+  useEffect(() => {
+    if (ligaFromUrl) setFilters((prev) => ({ ...prev, liga: ligaFromUrl }))
+  }, [ligaFromUrl])
 
-  const teams = useMemo(() => getUniqueTeams(allProducts), [])
+  // Buscar produtos da API (com filtros server-side: liga, team, search)
+  useEffect(() => {
+    let isMounted = true
 
-  const filteredProducts = useMemo(
-    () => filterAndSortProducts(allProducts, filters, sort, plpKey),
-    [filters, sort, plpKey]
-  )
+    async function fetchProducts() {
+      setIsLoading(true)
+      setHasError(false)
+      try {
+        const apiParams = {}
+        if (filters.liga) apiParams.liga = filters.liga
+        if (filters.team) apiParams.team = filters.team
+        if (searchQuery.trim()) apiParams.search = searchQuery.trim()
+        const data = await productService.getAll(apiParams)
+
+        if (!isMounted) return
+        setAllProducts(data)
+        const baseList = filterProductsBySearchTerm(data, searchQuery)
+        const list = filterAndSortProducts(baseList, filters, sort, plpKey)
+        setProducts(list)
+      } catch (error) {
+        if (!isMounted) return
+        console.error('Erro ao carregar produtos:', error)
+        setHasError(true)
+        setProducts([])
+        showError('Erro ao carregar produtos. Tente novamente.')
+      } finally {
+        if (isMounted) setIsLoading(false)
+      }
+    }
+
+    fetchProducts()
+    return () => { isMounted = false }
+  }, [retryCount, filters.liga, filters.team, searchQuery])
+
+  // Aplicar filtros e ordenação quando mudarem
+  useEffect(() => {
+    if (allProducts.length === 0) return
+    
+    const baseList = filterProductsBySearchTerm(allProducts, searchQuery)
+    const list = filterAndSortProducts(baseList, filters, sort, plpKey)
+    setProducts(list)
+  }, [filters, sort, plpKey, searchQuery, allProducts])
+
+  const handleRetry = () => {
+    setHasError(false)
+    setRetryCount((c) => c + 1)
+  }
+
+  const teams = useMemo(() => getUniqueTeams(allProducts), [allProducts])
+  const ligas = useMemo(() => getUniqueLigas(allProducts), [allProducts])
 
   const setFilter = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }))
+    if (key === 'liga') {
+      setSearchParams((prev) => {
+        const p = new URLSearchParams(prev)
+        if (value) p.set('liga', value)
+        else p.delete('liga')
+        return p
+      }, { replace: true })
+    }
   }
 
   return (
@@ -138,7 +226,9 @@ export default function ProductListingPage() {
         <PLPHeaderImage src={config.bannerImage} alt="" />
         <PLPHeaderOverlay />
         <PLPHeaderContent>
-          <PLPHeaderTitle>{config.title}</PLPHeaderTitle>
+          <PLPHeaderTitle>
+            {searchQuery.trim() ? `Resultados para '${searchQuery.trim()}'` : config.title}
+          </PLPHeaderTitle>
           <PLPHeaderSubtitle>{config.subtitle}</PLPHeaderSubtitle>
         </PLPHeaderContent>
       </PLPHeader>
@@ -154,6 +244,22 @@ export default function ProductListingPage() {
               Filtros {sidebarOpen ? '▲' : '▼'}
             </MobileFilterToggle>
             <SidebarWrapper $open={sidebarOpen}>
+              <FilterSection>
+                <FilterTitle>Liga</FilterTitle>
+                <FilterSelect
+                  value={filters.liga}
+                  onChange={(e) => setFilter('liga', e.target.value)}
+                  aria-label="Filtrar por liga"
+                >
+                  <option value="">Todas</option>
+                  {ligas.map((liga) => (
+                    <option key={liga} value={liga}>
+                      {liga}
+                    </option>
+                  ))}
+                </FilterSelect>
+              </FilterSection>
+
               <FilterSection>
                 <FilterTitle>Time</FilterTitle>
                 <div>
@@ -226,46 +332,65 @@ export default function ProductListingPage() {
           </PLPSidebar>
 
           <PLPContent>
-            <Toolbar>
-              <ResultCount>
-                {filteredProducts.length} produto{filteredProducts.length !== 1 ? 's' : ''}
-              </ResultCount>
-              <SortWrapper>
-                <SortLabel htmlFor="plp-sort">Ordenar:</SortLabel>
-                <SortSelect
-                  id="plp-sort"
-                  value={sort}
-                  onChange={(e) => setSort(e.target.value)}
-                  aria-label="Ordenação"
-                >
-                  {SORT_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </SortSelect>
-              </SortWrapper>
-            </Toolbar>
+            {hasError ? (
+              <ErrorState onRetry={handleRetry} />
+            ) : (
+              <>
+                {!isLoading && (
+                  <Toolbar>
+                    <ResultCount>
+                      {products.length} produto{products.length !== 1 ? 's' : ''}
+                    </ResultCount>
+                    <SortWrapper>
+                      <SortLabel htmlFor="plp-sort">Ordenar:</SortLabel>
+                      <SortSelect
+                        id="plp-sort"
+                        value={sort}
+                        onChange={(e) => setSort(e.target.value)}
+                        aria-label="Ordenação"
+                      >
+                        {SORT_OPTIONS.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </SortSelect>
+                    </SortWrapper>
+                  </Toolbar>
+                )}
 
-            <ProductsGrid>
-              {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  name={product.name}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  image={product.image}
-                  imageHover={product.imageHover}
-                  badge={product.badge}
-                  link={product.link}
-                />
-              ))}
-            </ProductsGrid>
+                {isLoading ? (
+                  <ProductsGrid>
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <ProductCardSkeleton key={`skeleton-${i}`} />
+                    ))}
+                  </ProductsGrid>
+                ) : (
+                  <>
+                    <ProductsGrid>
+                      {products.map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          name={product.name}
+                          price={product.price}
+                          originalPrice={product.originalPrice}
+                          image={product.image}
+                          imageHover={product.imageHover}
+                          badge={product.badge}
+                          link={product.link}
+                          liga={product.liga}
+                        />
+                      ))}
+                    </ProductsGrid>
 
-            {filteredProducts.length === 0 && (
-              <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>
-                Nenhum produto encontrado com os filtros selecionados. Tente alterar os filtros.
-              </p>
+                    {products.length === 0 && (
+                      <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>
+                        Nenhum produto encontrado com os filtros selecionados. Tente alterar os filtros.
+                      </p>
+                    )}
+                  </>
+                )}
+              </>
             )}
           </PLPContent>
         </PLPLayout>

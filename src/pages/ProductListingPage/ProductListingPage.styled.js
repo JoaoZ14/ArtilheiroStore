@@ -85,8 +85,9 @@ export const PLPMain = styled.main`
   flex: 1;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem 3rem;
+  padding: 0 1rem 3rem;
   width: 100%;
+  min-width: 0;
 
   @media (min-width: 768px) {
     padding: 0 2rem 4rem;
@@ -128,6 +129,27 @@ export const FilterTitle = styled.h3`
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid #eee;
+`
+
+export const FilterSelect = styled.select`
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23444' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+
+  &:focus {
+    outline: none;
+    border-color: #c41e3a;
+  }
 `
 
 export const FilterOption = styled.label`
@@ -255,7 +277,11 @@ export const SortSelect = styled.select`
 export const ProductsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 0.75rem;
+
+  @media (min-width: 400px) {
+    gap: 1rem;
+  }
 
   @media (min-width: 576px) {
     gap: 1.25rem;

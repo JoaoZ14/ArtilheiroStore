@@ -10,9 +10,10 @@ export const StepperWrap = styled.div`
 `
 
 export const StepperButton = styled.button`
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,6 +39,13 @@ export const StepperButton = styled.button`
   &:focus-visible {
     outline: 2px solid #1a1a1a;
     outline-offset: -2px;
+  }
+
+  @media (min-width: 768px) {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
   }
 `
 

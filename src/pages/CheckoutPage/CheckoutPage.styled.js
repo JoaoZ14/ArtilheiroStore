@@ -1,4 +1,8 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const spin = keyframes`
+  to { transform: rotate(360deg); }
+`
 
 export const StyledCheckout = styled.main`
   min-height: 100vh;
@@ -10,6 +14,7 @@ export const CheckoutContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 1rem 3rem;
+  min-width: 0;
 
   @media (min-width: 768px) {
     padding: 1.5rem 1.5rem 4rem;
@@ -38,9 +43,11 @@ export const StepCard = styled.section`
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   padding: 1.5rem;
+  padding-bottom: calc(1.5rem + var(--safe-area-bottom, 0px));
 
   @media (min-width: 768px) {
     padding: 2rem;
+    padding-bottom: 2rem;
   }
 `
 
@@ -71,14 +78,16 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   width: 100%;
+  min-height: 48px;
   height: 48px;
   padding: 0 1rem;
-  font-size: 1rem;
+  font-size: 16px;
   color: #1a1a1a;
   background: #fff;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
 
   &::placeholder {
     color: #9ca3af;
@@ -94,6 +103,10 @@ export const Input = styled.input`
     background: #f3f4f6;
     cursor: not-allowed;
   }
+
+  @media (max-width: 767px) {
+    font-size: 16px;
+  }
 `
 
 export const Row = styled.div`
@@ -104,6 +117,7 @@ export const Row = styled.div`
 
 export const SubmitButton = styled.button`
   width: 100%;
+  min-height: 48px;
   height: 52px;
   margin-top: 0.5rem;
   font-size: 1rem;
@@ -115,6 +129,10 @@ export const SubmitButton = styled.button`
   cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease;
   -webkit-tap-highlight-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
   &:hover:not(:disabled) {
     background: #a01930;
@@ -135,52 +153,14 @@ export const SubmitButton = styled.button`
   }
 `
 
-export const SuccessWrap = styled.div`
-  text-align: center;
-  padding: 2rem 1rem;
-`
-
-export const SuccessTitle = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 0.5rem;
-`
-
-export const SuccessText = styled.p`
-  font-size: 1rem;
-  color: #6b7280;
-  margin: 0 0 2rem;
-`
-
-export const BackButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 200px;
-  height: 52px;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;
-  background: #c41e3a;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
-  -webkit-tap-highlight-color: transparent;
-
-  &:hover {
-    background: #a01930;
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  &:focus-visible {
-    outline: 2px solid #c41e3a;
-    outline-offset: 2px;
-  }
+export const ButtonSpinner = styled.span`
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ${spin} 0.75s linear infinite;
+  flex-shrink: 0;
 `
 
 export const PaymentOption = styled.label`
@@ -188,11 +168,13 @@ export const PaymentOption = styled.label`
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
+  min-height: 44px;
   border: 2px solid ${({ $selected }) => ($selected ? '#c41e3a' : '#e5e7eb')};
   border-radius: 8px;
   cursor: pointer;
   background: ${({ $selected }) => ($selected ? 'rgba(196, 30, 58, 0.04)' : '#fff')};
   transition: border-color 0.2s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     border-color: ${({ $selected }) => ($selected ? '#c41e3a' : '#d1d5db')};
@@ -213,9 +195,15 @@ export const SummaryCol = styled.div`
 
 export const StepIndicator = styled.div`
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
+`
+
+export const StepDots = styled.span`
+  display: flex;
+  gap: 0.5rem;
 `
 
 export const StepDot = styled.span`
@@ -224,4 +212,10 @@ export const StepDot = styled.span`
   border-radius: 50%;
   background: ${({ $active }) => ($active ? '#c41e3a' : '#e5e7eb')};
   transition: background 0.2s;
+`
+
+export const StepLabel = styled.span`
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
 `

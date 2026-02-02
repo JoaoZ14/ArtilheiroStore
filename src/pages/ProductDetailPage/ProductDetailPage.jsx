@@ -1,13 +1,16 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import { useCart } from '../../context/CartContext'
+import { useToast } from '../../context/ToastContext'
 import Footer from '../../components/Footer/Footer'
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb'
 import ProductCard from '../../components/ProductCard/ProductCard'
 import ImageGallery from './components/ImageGallery/ImageGallery'
 import ProductInfo from './components/ProductInfo/ProductInfo'
-import { getProductDetail, allProducts, LEAGUE_NAMES } from '../../data/mockData'
+import PDPDetailSkeleton from './components/PDPDetailSkeleton/PDPDetailSkeleton'
+import ErrorState from '../../components/ErrorState/ErrorState'
+import { productService } from '../../services/api/productService'
 import {
   StyledPDP,
   PDPContainer,
@@ -27,39 +30,97 @@ const RELATED_COUNT = 4
 
 function getBreadcrumbItems(product) {
   if (!product) return [{ label: 'Home', path: '/' }, { label: 'Camisas', path: '/produtos' }]
-  const leagueName = LEAGUE_NAMES[product.league] || product.league
+  const ligaLabel = product.liga || 'Produtos'
   return [
     { label: 'Home', path: '/' },
     { label: 'Camisas', path: '/produtos' },
-    { label: leagueName, path: `/${product.league}` },
+    { label: ligaLabel, path: `/produtos?liga=${encodeURIComponent(ligaLabel)}` },
   ]
 }
 
 export default function ProductDetailPage() {
   const { id } = useParams()
   const { addItem, openMiniCart } = useCart()
-  const product = useMemo(() => getProductDetail(id), [id])
+  const { showError } = useToast()
+  const [product, setProduct] = useState(null)
+  const [relatedProducts, setRelatedProducts] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
 
   const [selectedSize, setSelectedSize] = useState(null)
   const [quantity, setQuantity] = useState(1)
   const [showAddedFeedback, setShowAddedFeedback] = useState(false)
 
-  const relatedProducts = useMemo(() => {
-    if (!product) return []
-    const others = allProducts.filter((p) => p.id !== product.id)
-    return others.slice(0, RELATED_COUNT)
-  }, [product])
+  useEffect(() => {
+    let isMounted = true
 
-  const maxQuantity = useMemo(() => {
-    if (!selectedSize || !product?.sizeStock) return 10
-    return Math.min(10, product.sizeStock[selectedSize] || 1)
-  }, [product?.sizeStock, selectedSize])
+    async function fetchProduct() {
+      setIsLoading(true)
+      setHasError(false)
+
+      try {
+        // Buscar produto e produtos relacionados em paralelo
+        const [productData, allProductsData] = await Promise.all([
+          productService.getById(id),
+          productService.getAll()
+        ])
+
+        if (!isMounted) return
+
+        setProduct(productData)
+        
+        // Produtos relacionados: mesma liga ou categoria, exceto o atual
+        const related = allProductsData
+          .filter(
+            (p) =>
+              p.id !== productData?.id &&
+              (p.liga === productData?.liga || p.category === productData?.category)
+          )
+          .slice(0, RELATED_COUNT)
+        
+        setRelatedProducts(related)
+      } catch (error) {
+        if (!isMounted) return
+
+        console.error('Erro ao carregar produto:', error)
+        setHasError(true)
+        setProduct(null)
+        
+        // Se for 404, não mostra toast (página já mostra "não encontrado")
+        if (error.status !== 404) {
+          showError('Erro ao carregar produto. Tente novamente.')
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    fetchProduct()
+
+    return () => {
+      isMounted = false
+    }
+  }, [id, retryCount, showError])
+
+  const handleRetry = () => {
+    setHasError(false)
+    setRetryCount((c) => c + 1)
+  }
+
+  const maxQuantity =
+    !selectedSize || !product?.sizeStock
+      ? 10
+      : Math.min(10, product.sizeStock[selectedSize] || 1)
 
   useEffect(() => {
     if (quantity > maxQuantity) setQuantity(maxQuantity)
   }, [maxQuantity, quantity])
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    await new Promise((r) => setTimeout(r, 600))
     addItem({
       productId: product.id,
       name: product.name,
@@ -78,6 +139,30 @@ export default function ProductDetailPage() {
     return () => clearTimeout(t)
   }, [showAddedFeedback])
 
+  if (isLoading) {
+    return (
+      <StyledPDP>
+        <Navbar />
+        <PDPContainer>
+          <PDPDetailSkeleton />
+        </PDPContainer>
+        <Footer />
+      </StyledPDP>
+    )
+  }
+
+  if (hasError) {
+    return (
+      <StyledPDP>
+        <Navbar />
+        <PDPContainer>
+          <ErrorState onRetry={handleRetry} />
+        </PDPContainer>
+        <Footer />
+      </StyledPDP>
+    )
+  }
+
   if (!product) {
     return (
       <StyledPDP>
@@ -86,7 +171,7 @@ export default function ProductDetailPage() {
           <NotFoundWrap>
             <NotFoundTitle>Produto não encontrado</NotFoundTitle>
             <NotFoundText>O produto que você procura não existe ou foi removido.</NotFoundText>
-            <NotFoundLink to="/produtos">Ver todos os produtos</NotFoundLink>
+            <NotFoundLink to="/produtos">Voltar para a loja</NotFoundLink>
           </NotFoundWrap>
         </PDPContainer>
         <Footer />
@@ -132,6 +217,7 @@ export default function ProductDetailPage() {
                   imageHover={p.imageHover}
                   badge={p.badge}
                   link={p.link}
+                  liga={p.liga}
                 />
               ))}
             </RelatedGrid>

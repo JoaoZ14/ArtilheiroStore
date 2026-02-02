@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { NavLink, useNavigate, useSearchParams } from 'react-router-dom'
 import { navLinks } from '../../data/mockData'
 import { useCart } from '../../context/CartContext'
 import {
@@ -9,6 +9,11 @@ import {
   LogoImage,
   NavMenu,
   NavItem,
+  NavSearchWrap,
+  SearchForm,
+  SearchInput,
+  SearchSubmit,
+  MobileSearchWrap,
   NavActions,
   IconButton,
   CartButtonWrap,
@@ -55,7 +60,24 @@ const CloseIcon = () => (
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { openMiniCart, itemCount } = useCart()
+
+  useEffect(() => {
+    const q = searchParams.get('q')
+    if (q != null) setSearchQuery(q)
+  }, [searchParams])
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault()
+    const term = searchQuery.trim()
+    if (term) {
+      navigate(`/produtos?q=${encodeURIComponent(term)}`)
+      setMobileOpen(false)
+    }
+  }
 
   return (
     <StyledNavbar>
@@ -78,10 +100,22 @@ export default function Navbar() {
           ))}
         </NavMenu>
 
+        <NavSearchWrap>
+          <SearchForm onSubmit={handleSearchSubmit} role="search">
+            <SearchInput
+              type="search"
+              placeholder="Buscar camisas, times ou categorias"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Buscar camisas, times ou categorias"
+            />
+            <SearchSubmit type="submit" aria-label="Buscar">
+              <SearchIcon />
+            </SearchSubmit>
+          </SearchForm>
+        </NavSearchWrap>
+
         <NavActions>
-          <IconButton href="/busca" aria-label="Buscar">
-            <SearchIcon />
-          </IconButton>
           <CartButtonWrap>
             <IconButton as="button" type="button" onClick={openMiniCart} aria-label={`Carrinho com ${itemCount} itens`}>
               <CartIcon />
@@ -90,7 +124,7 @@ export default function Navbar() {
               <CartBadge aria-hidden="true">{itemCount > 99 ? '99+' : itemCount}</CartBadge>
             )}
           </CartButtonWrap>
-          <IconButton href="/perfil" aria-label="Perfil">
+          <IconButton as={NavLink} to="/pedido/consultar" aria-label="Perfil" onClick={() => setMobileOpen(false)}>
             <ProfileIcon />
           </IconButton>
         </NavActions>
@@ -104,6 +138,20 @@ export default function Navbar() {
       </NavContainer>
 
       <MobileMenu $open={mobileOpen}>
+        <MobileSearchWrap>
+          <SearchForm onSubmit={handleSearchSubmit} role="search">
+            <SearchInput
+              type="search"
+              placeholder="Buscar camisas, times ou categorias"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Buscar camisas, times ou categorias"
+            />
+            <SearchSubmit type="submit" aria-label="Buscar">
+              <SearchIcon />
+            </SearchSubmit>
+          </SearchForm>
+        </MobileSearchWrap>
         {navLinks.map((link) => (
           <NavLink
             key={link.path}

@@ -58,6 +58,7 @@ export const ItemName = styled.h3`
   font-weight: 600;
   color: #1a1a1a;
   line-height: 1.3;
+  word-break: break-word;
 `
 
 export const ItemMeta = styled.p`
@@ -95,8 +96,10 @@ export const ItemRemoveButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   color: #6b7280;
   background: transparent;
   border: none;
@@ -113,6 +116,13 @@ export const ItemRemoveButton = styled.button`
   &:focus-visible {
     outline: 2px solid #c41e3a;
     outline-offset: 2px;
+  }
+
+  @media (min-width: 768px) {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
   }
 `
 

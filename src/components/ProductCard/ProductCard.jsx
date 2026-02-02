@@ -7,6 +7,7 @@ import {
   CardBadge,
   CardInfo,
   CardName,
+  CardLiga,
   CardPrice,
   CardOriginalPrice,
 } from './ProductCard.styled'
@@ -18,7 +19,7 @@ function formatPrice(value) {
   }).format(value)
 }
 
-export default function ProductCard({ name, price, originalPrice, image, imageHover, badge, link }) {
+export default function ProductCard({ name, price, originalPrice, image, imageHover, badge, link, liga }) {
   const [isHover, setIsHover] = useState(false)
   const displayImage = imageHover && isHover ? imageHover : image
 
@@ -43,6 +44,7 @@ export default function ProductCard({ name, price, originalPrice, image, imageHo
       </CardImageWrapper>
       <CardInfo>
         <CardName>{name}</CardName>
+        {liga && <CardLiga>{liga}</CardLiga>}
         <CardPrice>
           {formatPrice(price)}
           {originalPrice && <CardOriginalPrice>{formatPrice(originalPrice)}</CardOriginalPrice>}
