@@ -8,7 +8,7 @@ export const StyledSuccess = styled.main`
 `
 
 export const SuccessContainer = styled.div`
-  max-width: 480px;
+  max-width: 560px;
   margin: 0 auto;
   padding: 2rem 1rem calc(4rem + var(--safe-area-bottom, 0px));
   text-align: center;

@@ -207,7 +207,11 @@ export default function CheckoutPage() {
                 try {
                   sessionStorage.setItem(
                     CHECKOUT_SUCCESS_KEY,
-                    JSON.stringify({ orderId: result.orderId, total: orderTotal ?? subtotal })
+                    JSON.stringify({
+                      orderId: result.orderId,
+                      total: orderTotal ?? subtotal,
+                      email: formData.email?.trim?.() ?? '',
+                    })
                   )
                 } catch (_) {}
                 clearCart()
@@ -219,7 +223,11 @@ export default function CheckoutPage() {
                 try {
                   sessionStorage.setItem(
                     CHECKOUT_SUCCESS_KEY,
-                    JSON.stringify({ orderId: result.orderId, total: orderTotal ?? subtotal })
+                    JSON.stringify({
+                      orderId: result.orderId,
+                      total: orderTotal ?? subtotal,
+                      email: formData.email?.trim?.() ?? '',
+                    })
                   )
                 } catch (_) {}
                 clearCart()
@@ -313,7 +321,11 @@ export default function CheckoutPage() {
         try {
           sessionStorage.setItem(
             CHECKOUT_SUCCESS_KEY,
-            JSON.stringify({ orderId: res.orderId, total: orderTotal ?? subtotal })
+            JSON.stringify({
+              orderId: res.orderId,
+              total: orderTotal ?? subtotal,
+              email: formData.email?.trim?.() ?? '',
+            })
           )
         } catch (_) {}
       })
@@ -346,7 +358,11 @@ export default function CheckoutPage() {
         try {
           sessionStorage.setItem(
             CHECKOUT_SUCCESS_KEY,
-            JSON.stringify({ orderId: res.orderId, total: orderTotal ?? subtotal })
+            JSON.stringify({
+              orderId: res.orderId,
+              total: orderTotal ?? subtotal,
+              email: formData.email?.trim?.() ?? '',
+            })
           )
         } catch (_) {}
       })

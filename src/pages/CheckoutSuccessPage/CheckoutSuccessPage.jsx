@@ -43,7 +43,12 @@ export default function CheckoutSuccessPage() {
     if (codeFromUrl?.trim()) {
       const totalFromUrl = searchParams.get('total')
       const total = totalFromUrl != null ? Number(totalFromUrl) : null
-      setOrder({ orderId: codeFromUrl.trim(), total })
+      const emailFromUrl = searchParams.get('email')
+      setOrder({
+        orderId: codeFromUrl.trim(),
+        total,
+        email: emailFromUrl?.trim() || null,
+      })
       return
     }
     try {
@@ -57,22 +62,28 @@ export default function CheckoutSuccessPage() {
         navigate('/', { replace: true })
         return
       }
-      setOrder({ orderId: data.orderId, total: data.total ?? null })
+      setOrder({
+        orderId: data.orderId,
+        total: data.total ?? null,
+        email: data.email?.trim() || null,
+      })
     } catch {
       navigate('/', { replace: true })
     }
   }, [navigate, searchParams])
 
-  // Após PIX pago: buscar pedido via lookup para mostrar status atualizado
+  // Buscar pedido via lookup (email + código) para mostrar os dados iguais à tela "Rastrear meu pedido"
+  const emailForLookup = order?.email ?? state?.email
+  const orderCodeForLookup = order?.orderId ?? state?.orderCode
   useEffect(() => {
-    if (!state.fromPix || !state.email?.trim() || !state.orderCode?.trim()) return
+    if (!emailForLookup?.trim() || !orderCodeForLookup?.trim()) return
     setLookupLoading(true)
     orderService
-      .lookupOrder(state.email.trim(), state.orderCode.trim())
+      .lookupOrder(emailForLookup.trim(), orderCodeForLookup.trim())
       .then(setOrderDetails)
       .catch(() => setOrderDetails(null))
       .finally(() => setLookupLoading(false))
-  }, [state.fromPix, state.email, state.orderCode])
+  }, [emailForLookup, orderCodeForLookup])
 
   const handleBackToStore = () => {
     try {
@@ -84,6 +95,9 @@ export default function CheckoutSuccessPage() {
     return null
   }
 
+  const showLookupCard = orderDetails && !lookupLoading
+  const showFallbackInfo = !lookupLoading && !orderDetails
+
   return (
     <StyledSuccess>
       <Navbar />
@@ -94,25 +108,27 @@ export default function CheckoutSuccessPage() {
           <SuccessText>
             Recebemos seu pedido e ele já está sendo processado.
           </SuccessText>
-          <OrderInfo>
-            <OrderRow>
-              <OrderTerm>Número do pedido</OrderTerm>
-              <OrderValue>{order.orderId}</OrderValue>
-            </OrderRow>
-            <OrderRow>
-              <OrderTerm>Valor total</OrderTerm>
-              <OrderValue>{order.total != null ? formatPrice(order.total) : '—'}</OrderValue>
-            </OrderRow>
-          </OrderInfo>
           {lookupLoading && (
-            <SuccessText style={{ marginTop: '1rem', fontSize: '0.875rem' }}>
+            <SuccessText style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>
               Carregando detalhes do pedido…
             </SuccessText>
           )}
-          {orderDetails && !lookupLoading && (
+          {showLookupCard && (
             <OrderDetailsWrap>
               <OrderResultCard order={orderDetails} />
             </OrderDetailsWrap>
+          )}
+          {showFallbackInfo && (
+            <OrderInfo>
+              <OrderRow>
+                <OrderTerm>Número do pedido</OrderTerm>
+                <OrderValue>{order.orderId}</OrderValue>
+              </OrderRow>
+              <OrderRow>
+                <OrderTerm>Valor total</OrderTerm>
+                <OrderValue>{order.total != null ? formatPrice(order.total) : '—'}</OrderValue>
+              </OrderRow>
+            </OrderInfo>
           )}
           <BackLink to="/" onClick={handleBackToStore} style={{ marginTop: '1.5rem' }}>
             Voltar para a loja
