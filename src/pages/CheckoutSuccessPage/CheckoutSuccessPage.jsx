@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import {
@@ -27,9 +27,17 @@ function formatPrice(value) {
 
 export default function CheckoutSuccessPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [order, setOrder] = useState(null)
 
   useEffect(() => {
+    const codeFromUrl = searchParams.get('code')
+    if (codeFromUrl?.trim()) {
+      const totalFromUrl = searchParams.get('total')
+      const total = totalFromUrl != null ? Number(totalFromUrl) : null
+      setOrder({ orderId: codeFromUrl.trim(), total })
+      return
+    }
     try {
       const raw = sessionStorage.getItem(CHECKOUT_SUCCESS_KEY)
       if (!raw) {
@@ -37,15 +45,15 @@ export default function CheckoutSuccessPage() {
         return
       }
       const data = JSON.parse(raw)
-      if (!data?.orderId || data?.total == null) {
+      if (!data?.orderId) {
         navigate('/', { replace: true })
         return
       }
-      setOrder({ orderId: data.orderId, total: data.total })
+      setOrder({ orderId: data.orderId, total: data.total ?? null })
     } catch {
       navigate('/', { replace: true })
     }
-  }, [navigate])
+  }, [navigate, searchParams])
 
   const handleBackToStore = () => {
     try {
@@ -74,7 +82,7 @@ export default function CheckoutSuccessPage() {
             </OrderRow>
             <OrderRow>
               <OrderTerm>Valor total</OrderTerm>
-              <OrderValue>{formatPrice(order.total)}</OrderValue>
+              <OrderValue>{order.total != null ? formatPrice(order.total) : '—'}</OrderValue>
             </OrderRow>
           </OrderInfo>
           <BackLink to="/" onClick={handleBackToStore}>

@@ -10,14 +10,14 @@ export const categories = [
     id: 1,
     title: 'Camisas Nacionais',
     slug: 'nacionais',
-    image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=80',
+    image: '/banners/camisas_nacionais_banner.jpg',
     link: '/categoria/nacionais',
   },
   {
     id: 2,
     title: 'Camisas Europeias',
     slug: 'europeias',
-    image: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=800&q=80',
+    image: '/banners/camisas_europa_banner.jpg',
     link: '/categoria/europeias',
   },
   {

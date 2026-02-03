@@ -64,6 +64,13 @@ export const Form = styled.form`
   gap: 1rem;
 `
 
+export const InfoText = styled.p`
+  font-size: 0.9375rem;
+  color: #4b5563;
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+`
+
 export const Field = styled.div`
   display: flex;
   flex-direction: column;
@@ -218,4 +225,94 @@ export const StepLabel = styled.span`
   font-size: 0.875rem;
   font-weight: 600;
   color: #6b7280;
+`
+
+export const PaymentMethodGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+`
+
+export const QrCodeBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin: 1rem 0;
+`
+
+export const QrCodeImage = styled.img`
+  display: block;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 4px;
+`
+
+export const QrCodeLabel = styled.span`
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+`
+
+export const CopyArea = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`
+
+export const CopyInput = styled.input`
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-family: monospace;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  -webkit-tap-highlight-color: transparent;
+`
+
+export const CopyButton = styled.button`
+  align-self: flex-start;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #c41e3a;
+  background: #fff;
+  border: 1px solid #c41e3a;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: #c41e3a;
+    color: #fff;
+  }
+`
+
+export const BoletoLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: #c41e3a;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #a01930;
+  }
 `

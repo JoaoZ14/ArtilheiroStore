@@ -18,6 +18,7 @@ import {
 
 const STATUS_LABELS = {
   CREATED: 'Criado',
+  PAYMENT_PENDING: 'Aguardando pagamento',
   PENDING_PAYMENT: 'Aguardando pagamento',
   PAID: 'Pago',
   CANCELED: 'Cancelado',
@@ -25,6 +26,7 @@ const STATUS_LABELS = {
 
 const STATUS_VARIANT = {
   CREATED: 'yellow',
+  PAYMENT_PENDING: 'yellow',
   PENDING_PAYMENT: 'yellow',
   PAID: 'green',
   CANCELED: 'red',
