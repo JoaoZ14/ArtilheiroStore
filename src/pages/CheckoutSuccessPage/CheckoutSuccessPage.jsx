@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
+import { orderService } from '../../services/api/orderService'
+import OrderResultCard from '../OrderLookupPage/components/OrderResultCard/OrderResultCard'
 import {
   StyledSuccess,
   SuccessContainer,
@@ -13,6 +15,7 @@ import {
   OrderRow,
   OrderTerm,
   OrderValue,
+  OrderDetailsWrap,
   BackLink,
 } from './CheckoutSuccessPage.styled'
 
@@ -27,8 +30,13 @@ function formatPrice(value) {
 
 export default function CheckoutSuccessPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [searchParams] = useSearchParams()
   const [order, setOrder] = useState(null)
+  const [orderDetails, setOrderDetails] = useState(null)
+  const [lookupLoading, setLookupLoading] = useState(false)
+
+  const state = location.state ?? {}
 
   useEffect(() => {
     const codeFromUrl = searchParams.get('code')
@@ -54,6 +62,17 @@ export default function CheckoutSuccessPage() {
       navigate('/', { replace: true })
     }
   }, [navigate, searchParams])
+
+  // Após PIX pago: buscar pedido via lookup para mostrar status atualizado
+  useEffect(() => {
+    if (!state.fromPix || !state.email?.trim() || !state.orderCode?.trim()) return
+    setLookupLoading(true)
+    orderService
+      .lookupOrder(state.email.trim(), state.orderCode.trim())
+      .then(setOrderDetails)
+      .catch(() => setOrderDetails(null))
+      .finally(() => setLookupLoading(false))
+  }, [state.fromPix, state.email, state.orderCode])
 
   const handleBackToStore = () => {
     try {
@@ -85,7 +104,17 @@ export default function CheckoutSuccessPage() {
               <OrderValue>{order.total != null ? formatPrice(order.total) : '—'}</OrderValue>
             </OrderRow>
           </OrderInfo>
-          <BackLink to="/" onClick={handleBackToStore}>
+          {lookupLoading && (
+            <SuccessText style={{ marginTop: '1rem', fontSize: '0.875rem' }}>
+              Carregando detalhes do pedido…
+            </SuccessText>
+          )}
+          {orderDetails && !lookupLoading && (
+            <OrderDetailsWrap>
+              <OrderResultCard order={orderDetails} />
+            </OrderDetailsWrap>
+          )}
+          <BackLink to="/" onClick={handleBackToStore} style={{ marginTop: '1.5rem' }}>
             Voltar para a loja
           </BackLink>
         </SuccessCard>

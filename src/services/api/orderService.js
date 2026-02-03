@@ -132,6 +132,25 @@ export async function createPayment(orderId, paymentData) {
 }
 
 /**
+ * Consulta o status do pagamento (para polling PIX).
+ * Enquanto o usuário estiver na tela do QR code, chame a cada 3–5 s.
+ * Quando a API retornar updated: true, o pagamento foi confirmado (ex.: webhook ou checagem no MP).
+ *
+ * @param {string} orderId - Código do pedido (ex: ART-2026-0001)
+ * @param {string} paymentId - ID do pagamento retornado por createPayment
+ * @returns {Promise<Object>} - { updated: boolean, status?: string }
+ */
+export async function getPaymentStatus(orderId, paymentId) {
+  const response = await httpClient.get(
+    `/api/orders/${encodeURIComponent(orderId)}/payments/${encodeURIComponent(paymentId)}`
+  )
+  return {
+    updated: Boolean(response.updated),
+    status: response.status,
+  }
+}
+
+/**
  * Consulta um pedido por e-mail e código (checkout como convidado)
  *
  * @param {string} email - E-mail do cliente
@@ -154,5 +173,6 @@ export const orderService = {
   getConfig,
   createOrder,
   createPayment,
+  getPaymentStatus,
   lookupOrder,
 }

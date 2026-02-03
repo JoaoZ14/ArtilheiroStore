@@ -259,6 +259,35 @@ export default function CheckoutPage() {
     }
   }, [step, orderId, mpPublicKey, subtotal, paymentMethod])
 
+  // Polling do status do PIX enquanto o usuário está na tela do QR code (ex.: localhost sem webhook)
+  const pixPaymentId = pixResult?.paymentId
+  const emailForSuccessRef = useRef(formData.email)
+  emailForSuccessRef.current = formData.email
+  useEffect(() => {
+    if (!pixPaymentId || !orderId) return
+    const intervalMs = 4000
+    const timerId = setInterval(() => {
+      orderService
+        .getPaymentStatus(orderId, pixPaymentId)
+        .then(({ updated }) => {
+          if (updated) {
+            clearCart()
+            showSuccess('Pagamento confirmado!')
+            navigate('/checkout/sucesso', {
+              replace: true,
+              state: {
+                fromPix: true,
+                email: (emailForSuccessRef.current || '').trim(),
+                orderCode: orderId,
+              },
+            })
+          }
+        })
+        .catch(() => {})
+    }, intervalMs)
+    return () => clearInterval(timerId)
+  }, [orderId, pixPaymentId, clearCart, navigate, showSuccess])
+
   const payerFromForm = () => ({
     email: formData.email.trim(),
     name: formData.nome.trim(),
@@ -276,6 +305,7 @@ export default function CheckoutPage() {
       })
       .then(res => {
         setPixResult({
+          paymentId: res.paymentId,
           qrCodeBase64: res.qrCodeBase64,
           qrCode: res.qrCode,
           ticketUrl: res.ticketUrl,

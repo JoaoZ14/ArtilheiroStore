@@ -87,6 +87,11 @@ export const OrderValue = styled.dd`
   margin: 0;
 `
 
+export const OrderDetailsWrap = styled.div`
+  margin-top: 1.5rem;
+  text-align: left;
+`
+
 export const BackLink = styled(Link)`
   display: inline-flex;
   align-items: center;
