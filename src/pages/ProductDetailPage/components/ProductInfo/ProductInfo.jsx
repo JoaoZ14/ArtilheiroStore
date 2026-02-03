@@ -11,6 +11,7 @@ import {
   PriceCurrent,
   PriceOriginal,
   PromoBadge,
+  FreteGratisText,
   SelectorsRow,
   QuantityCol,
   CtaWrap,
@@ -56,6 +57,9 @@ export default function ProductInfo({
           </>
         )}
       </PriceBlock>
+      {(product?.frete_gratis ?? product?.freteGratis) && (
+        <FreteGratisText>Frete grátis</FreteGratisText>
+      )}
 
       <SizeSelector
         sizeStock={product?.sizeStock ?? {}}

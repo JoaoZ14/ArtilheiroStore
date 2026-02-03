@@ -128,6 +128,7 @@ export default function SearchPage() {
                 badge={product.badge}
                 link={product.link}
                 liga={product.liga}
+                freteGratis={product.frete_gratis ?? product.freteGratis}
               />
             ))}
           </ProductsGrid>

@@ -52,3 +52,44 @@ export const MessageText = styled.p`
   color: #6b7280;
   margin: 0;
 `
+
+export const TabGroup = styled.div`
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+`
+
+export const TabButton = styled.button`
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+
+  &:hover {
+    color: #374151;
+  }
+
+  &.active {
+    color: #c41e3a;
+    border-bottom-color: #c41e3a;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #c41e3a;
+    outline-offset: 2px;
+  }
+`
+
+export const OrderList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+`

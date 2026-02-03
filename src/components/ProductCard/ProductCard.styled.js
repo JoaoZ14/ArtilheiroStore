@@ -101,3 +101,10 @@ export const CardDiscountPercent = styled.span`
   color: #c41e3a;
   margin-left: 0.25rem;
 `
+
+export const FreteGratisText = styled.span`
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #059669;
+  line-height: 1.2;
+`

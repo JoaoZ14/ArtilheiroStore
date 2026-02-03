@@ -80,6 +80,7 @@ function normalizeProduct(apiProduct) {
     shipping: apiProduct.shipping || 'Envio em até 48h',
     exchange: apiProduct.exchange || 'Troca fácil em até 7 dias',
     season: apiProduct.season,
+    frete_gratis: Boolean(apiProduct.frete_gratis ?? apiProduct.freteGratis),
   }
 }
 

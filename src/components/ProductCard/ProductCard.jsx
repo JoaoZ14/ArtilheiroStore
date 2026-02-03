@@ -12,6 +12,7 @@ import {
   CardPrice,
   CardOriginalPrice,
   CardDiscountPercent,
+  FreteGratisText,
 } from './ProductCard.styled'
 
 function formatPrice(value) {
@@ -21,7 +22,7 @@ function formatPrice(value) {
   }).format(value)
 }
 
-export default function ProductCard({ name, price, originalPrice, image, imageHover, badge, link, liga }) {
+export default function ProductCard({ name, price, originalPrice, image, imageHover, badge, link, liga, freteGratis }) {
   const [isHover, setIsHover] = useState(false)
   const displayImage = imageHover && isHover ? imageHover : image
   const discountPercent = originalPrice ? getDiscountPercentage(originalPrice, price) : null
@@ -59,6 +60,7 @@ export default function ProductCard({ name, price, originalPrice, image, imageHo
             </>
           )}
         </CardPrice>
+        {freteGratis && <FreteGratisText>Frete grátis</FreteGratisText>}
       </CardInfo>
     </StyledProductCard>
   )

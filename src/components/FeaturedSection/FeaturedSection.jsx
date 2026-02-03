@@ -69,6 +69,8 @@ export default function FeaturedSection() {
                 imageHover={product.imageHover}
                 badge={product.badge}
                 link={product.link}
+                liga={product.liga}
+                freteGratis={product.frete_gratis ?? product.freteGratis}
               />
             ))
           )}

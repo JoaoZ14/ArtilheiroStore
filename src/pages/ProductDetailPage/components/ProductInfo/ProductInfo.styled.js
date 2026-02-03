@@ -29,11 +29,20 @@ export const ProductTitle = styled.h1`
 `
 
 export const PriceBlock = styled.div`
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 0.5rem;
+`
+
+export const FreteGratisText = styled.span`
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #059669;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  display: block;
 `
 
 export const PriceCurrent = styled.span`

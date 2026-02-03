@@ -518,10 +518,8 @@ export const footerData = {
     { label: 'Formas de pagamento', path: '/pagamento' },
   ],
   account: [
-    { label: 'Meus pedidos', path: '/pedidos' },
-    { label: 'Meus favoritos', path: '/favoritos' },
-    { label: 'Cadastre-se', path: '/cadastro' },
-    { label: 'Login', path: '/login' },
+    { label: 'Meus pedidos', path: '/pedido/consultar' },
+
   ],
   social: [
     { name: 'facebook', url: 'https://facebook.com', icon: 'facebook' },

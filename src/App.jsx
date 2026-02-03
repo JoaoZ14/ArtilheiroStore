@@ -13,6 +13,9 @@ import CheckoutSuccessPage from './pages/CheckoutSuccessPage/CheckoutSuccessPage
 import OrderLookupPage from './pages/OrderLookupPage/OrderLookupPage'
 import StaticPage from './pages/StaticPage/StaticPage'
 import HelpPage from './pages/HelpPage/HelpPage'
+import ContactPage from './pages/ContactPage/ContactPage'
+import PaymentPage from './pages/PaymentPage/PaymentPage'
+import EntregasPage from './pages/EntregasPage/EntregasPage'
 import AboutPage from './pages/AboutPage/AboutPage'
 import { staticPages } from './pages/StaticPage/content'
 
@@ -38,18 +41,19 @@ export default function App() {
           <Route path="/carrinho" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/checkout/sucesso" element={<CheckoutSuccessPage />} />
+          <Route path="/pedido/consultar/:id" element={<OrderLookupPage />} />
           <Route path="/pedido/consultar" element={<OrderLookupPage />} />
           <Route path="/busca" element={<SearchRedirect />} />
           <Route path="/sobre" element={<AboutPage />} />
-          <Route path="/contato" element={<StaticPage {...staticPages.contato} />} />
+          <Route path="/contato" element={<ContactPage />} />
           <Route path="/ajuda" element={<HelpPage />} />
           <Route path="/politica-de-privacidade" element={<StaticPage {...staticPages['politica-de-privacidade']} />} />
           <Route path="/termos" element={<StaticPage {...staticPages.termos} />} />
           <Route path="/lojas" element={<StaticPage {...staticPages.lojas} />} />
           <Route path="/trabalhe-conosco" element={<StaticPage {...staticPages['trabalhe-conosco']} />} />
           <Route path="/troca-devolucao" element={<StaticPage {...staticPages['troca-devolucao']} />} />
-          <Route path="/entregas" element={<StaticPage {...staticPages.entregas} />} />
-          <Route path="/pagamento" element={<StaticPage {...staticPages.pagamento} />} />
+          <Route path="/entregas" element={<EntregasPage />} />
+          <Route path="/pagamento" element={<PaymentPage />} />
           <Route path="/pedidos" element={<StaticPage {...staticPages.pedidos} />} />
           <Route path="/favoritos" element={<StaticPage {...staticPages.favoritos} />} />
           <Route path="/cadastro" element={<StaticPage {...staticPages.cadastro} />} />

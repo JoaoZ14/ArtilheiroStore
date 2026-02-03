@@ -169,10 +169,24 @@ export async function lookupOrder(email, orderCode) {
   }
 }
 
+/**
+ * Busca pedidos pelo CPF do cliente.
+ *
+ * @param {string} cpf - CPF (apenas dígitos ou com formatação)
+ * @returns {Promise<Array>} - Lista de pedidos do cliente
+ */
+export async function getOrdersByCpf(cpf) {
+  const digits = String(cpf ?? '').replace(/\D/g, '')
+  const params = new URLSearchParams({ cpf: digits })
+  const response = await httpClient.get(`/api/orders/by-cpf?${params.toString()}`)
+  return Array.isArray(response) ? response : response?.orders ?? []
+}
+
 export const orderService = {
   getConfig,
   createOrder,
   createPayment,
   getPaymentStatus,
   lookupOrder,
+  getOrdersByCpf,
 }
