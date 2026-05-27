@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
-import CategoryCard from '../../components/CategoryCard/CategoryCard'
 import {
-  categories,
   heroData,
   COLLECTION_COVERS,
   HAT_COLLECTION_ORDER,
@@ -21,10 +19,6 @@ import {
   HeaderCta,
   TimesMain,
   SectionContainer,
-  StylesSection,
-  StylesSectionTitle,
-  StylesSectionHint,
-  StylesGrid,
   LeagueSection,
   CollectionFeatured,
   CollectionFeaturedImage,
@@ -41,8 +35,6 @@ import {
   SkeletonImage,
   SkeletonText,
 } from './TimesPage.styled'
-
-const hatCategories = categories.filter((c) => c.slug.startsWith('chapeus'))
 
 function slugify(text) {
   return text
@@ -139,23 +131,6 @@ export default function TimesPage() {
 
       <TimesMain>
         <SectionContainer>
-          <StylesSection aria-labelledby="estilos-title">
-            <StylesSectionTitle id="estilos-title">Por estilo</StylesSectionTitle>
-            <StylesSectionHint>
-              Palha, aba larga, feltro e clássicos — as classificações da loja.
-            </StylesSectionHint>
-            <StylesGrid>
-              {hatCategories.map((category) => (
-                <CategoryCard
-                  key={category.id}
-                  title={category.title}
-                  image={category.image}
-                  link={category.link}
-                />
-              ))}
-            </StylesGrid>
-          </StylesSection>
-
           {isLoading ? (
             <CollectionsSkeleton />
           ) : (

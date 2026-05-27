@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
 import { useCart } from '../../context/CartContext'
 import { useToast } from '../../context/ToastContext'
@@ -40,7 +40,8 @@ function getBreadcrumbItems(product) {
 
 export default function ProductDetailPage() {
   const { id } = useParams()
-  const { addItem, openMiniCart } = useCart()
+  const navigate = useNavigate()
+  const { addItem } = useCart()
   const { showError } = useToast()
   const [product, setProduct] = useState(null)
   const [relatedProducts, setRelatedProducts] = useState([])
@@ -130,7 +131,7 @@ export default function ProductDetailPage() {
       unitPrice: product.price,
     })
     setShowAddedFeedback(true)
-    openMiniCart()
+    navigate('/carrinho')
   }
 
   useEffect(() => {

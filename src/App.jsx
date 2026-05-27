@@ -9,10 +9,10 @@ function AgroRedirect() {
 }
 import { CartProvider } from './context/CartContext'
 import { ToastProvider } from './context/ToastContext'
-import MiniCart from './components/MiniCart/MiniCart'
 import Toast from './components/Toast/Toast'
 import LandingPage from './pages/LandingPage/LandingPage'
 import ProductListingPage from './pages/ProductListingPage/ProductListingPage'
+import LancamentosPage from './pages/LancamentosPage/LancamentosPage'
 import ProductDetailPage from './pages/ProductDetailPage/ProductDetailPage'
 import TimesPage from './pages/TimesPage/TimesPage'
 import CartPage from './pages/CartPage/CartPage'
@@ -40,7 +40,6 @@ export default function App() {
       <ToastProvider>
         <CartProvider>
           <Toast />
-          <MiniCart />
           <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/chapeus" element={<TimesPage />} />
@@ -72,7 +71,7 @@ export default function App() {
           <Route path="/categoria/:slug" element={<ProductListingPage />} />
           <Route path="/brasileirao" element={<ProductListingPage />} />
           <Route path="/europeus" element={<ProductListingPage />} />
-          <Route path="/lancamentos" element={<ProductListingPage />} />
+          <Route path="/lancamentos" element={<LancamentosPage />} />
           <Route path="/promocoes" element={<ProductListingPage />} />
         </Routes>
         </CartProvider>

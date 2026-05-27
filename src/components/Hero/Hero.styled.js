@@ -21,6 +21,10 @@ export const HeroImage = styled.img`
   height: 100%;
   object-fit: cover;
   object-position: right center;
+
+  @media (max-width: 767px) {
+    opacity: 0.55;
+  }
 `
 
 export const HeroOverlay = styled.div`
@@ -28,11 +32,20 @@ export const HeroOverlay = styled.div`
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
-    to right,
-    rgba(250, 247, 242, 0.92) 0%,
-    rgba(250, 247, 242, 0.5) 42%,
-    transparent 72%
+    to bottom,
+    rgba(250, 247, 242, 0.88) 0%,
+    rgba(250, 247, 242, 0.78) 50%,
+    rgba(250, 247, 242, 0.65) 100%
   );
+
+  @media (min-width: 768px) {
+    background: linear-gradient(
+      to right,
+      rgba(250, 247, 242, 0.92) 0%,
+      rgba(250, 247, 242, 0.5) 42%,
+      transparent 72%
+    );
+  }
 `
 
 export const HeroContent = styled.div`

@@ -34,6 +34,48 @@ export const SectionTitle = styled.h2`
   }
 `
 
+export const SectionHint = styled.p`
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  margin: -1rem 0 1.25rem;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    margin: -1.5rem 0 1.5rem;
+    text-align: left;
+  }
+`
+
+export const HighlightRail = styled.div`
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+
+  & > * {
+    flex: 0 0 min(280px, 78vw);
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    overflow: visible;
+    padding-bottom: 0;
+
+    & > * {
+      flex: initial;
+    }
+  }
+`
+
 export const ProductsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;

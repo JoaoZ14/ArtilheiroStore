@@ -129,39 +129,6 @@ export const TimesMain = styled.main`
   }
 `
 
-export const StylesSection = styled.section`
-  margin-bottom: 3rem;
-`
-
-export const StylesSectionTitle = styled.h2`
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text);
-  margin: 0 0 0.35rem;
-`
-
-export const StylesSectionHint = styled.p`
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  margin: 0 0 1.25rem;
-  line-height: 1.5;
-`
-
-export const StylesGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
-  }
-`
-
 export const SectionContainer = styled.div`
   max-width: 1400px;
   margin: 0 auto;
@@ -189,7 +156,7 @@ export const CollectionFeatured = styled(Link)`
   position: relative;
   border-radius: 14px;
   overflow: hidden;
-  border: 1px solid var(--color-border);
+  border: none;
   box-shadow: 0 2px 16px rgba(61, 50, 41, 0.08);
   text-decoration: none;
   color: inherit;
@@ -314,7 +281,7 @@ export const SkeletonGrid = styled.div`
 export const SkeletonCard = styled.div`
   border-radius: 14px;
   overflow: hidden;
-  border: 1px solid var(--color-border);
+  border: none;
   background: var(--color-surface);
 `
 

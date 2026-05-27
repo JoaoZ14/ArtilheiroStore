@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useCallback, useEffect, useState } from 'react'
+import { createContext, useContext, useReducer, useCallback, useEffect } from 'react'
 
 const CART_STORAGE_KEY = 'artilheiro-cart'
 
@@ -79,7 +79,6 @@ const CartContext = createContext(null)
 
 export function CartProvider({ children }) {
   const [items, dispatch] = useReducer(cartReducer, initialState)
-  const [isMiniCartOpen, setIsMiniCartOpen] = useState(false)
 
   useEffect(() => {
     try {
@@ -118,9 +117,6 @@ export function CartProvider({ children }) {
     dispatch({ type: 'CLEAR' })
   }, [])
 
-  const openMiniCart = useCallback(() => setIsMiniCartOpen(true), [])
-  const closeMiniCart = useCallback(() => setIsMiniCartOpen(false), [])
-
   const itemCount = items.reduce((acc, item) => acc + item.quantity, 0)
   const subtotal = items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0)
 
@@ -137,9 +133,6 @@ export function CartProvider({ children }) {
     updateQuantity,
     removeItem,
     clearCart,
-    isMiniCartOpen,
-    openMiniCart,
-    closeMiniCart,
     freightPlaceholder: FREIGHT_PLACEHOLDER,
   }
 

@@ -5,6 +5,7 @@ import Footer from '../../components/Footer/Footer'
 import { useCart } from '../../context/CartContext'
 import { useToast } from '../../context/ToastContext'
 import { orderService } from '../../services/api/orderService'
+import { formatCep, cepDigits, fetchAddressByCep } from '../../utils/viacep'
 import { createCardPaymentBrick } from '../../services/mercadopago/loadMercadoPago'
 import OrderSummary from './components/OrderSummary/OrderSummary'
 import {
@@ -62,12 +63,12 @@ function validateStep1(data) {
 }
 
 function validateStep2(data) {
-  const cep = (data.cep || '').trim()
+  const cep = cepDigits(data.cep)
   const rua = (data.rua || '').trim()
   const numero = (data.numero || '').trim()
   const cidade = (data.cidade || '').trim()
   const estado = (data.estado || '').trim()
-  return cep.length >= 8 && rua.length >= 3 && numero.length >= 1 && cidade.length >= 2 && estado.length >= 2
+  return cep.length === 8 && rua.length >= 3 && numero.length >= 1 && cidade.length >= 2 && estado.length >= 2
 }
 
 function buildOrderPayload(formData, items, subtotal) {
@@ -122,6 +123,11 @@ export default function CheckoutPage() {
   const [brickReady, setBrickReady] = useState(false)
   const [brickError, setBrickError] = useState(null)
   const brickControllerRef = useRef(null)
+  const numeroInputRef = useRef(null)
+  const lastFetchedCepRef = useRef('')
+  const cepRequestIdRef = useRef(0)
+  const [cepLoading, setCepLoading] = useState(false)
+  const [cepError, setCepError] = useState(null)
   const [pixResult, setPixResult] = useState(null)
   const [pixLoading, setPixLoading] = useState(false)
   const [boletoResult, setBoletoResult] = useState(null)
@@ -387,6 +393,70 @@ export default function CheckoutPage() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const lookupCep = async (cepValue) => {
+    const digits = cepDigits(cepValue)
+    if (digits.length !== 8) return
+
+    if (digits === lastFetchedCepRef.current) return
+
+    const requestId = ++cepRequestIdRef.current
+    setCepLoading(true)
+    setCepError(null)
+
+    try {
+      const address = await fetchAddressByCep(digits)
+      if (requestId !== cepRequestIdRef.current) return
+
+      if (!address) {
+        lastFetchedCepRef.current = ''
+        setCepError('CEP não encontrado. Verifique e tente novamente.')
+        return
+      }
+
+      lastFetchedCepRef.current = digits
+      setFormData((prev) => ({
+        ...prev,
+        rua: address.rua || prev.rua,
+        cidade: address.cidade || prev.cidade,
+        estado: address.estado || prev.estado,
+      }))
+      numeroInputRef.current?.focus()
+    } catch {
+      if (requestId !== cepRequestIdRef.current) return
+      lastFetchedCepRef.current = ''
+      setCepError('Não foi possível buscar o CEP. Tente novamente.')
+    } finally {
+      if (requestId === cepRequestIdRef.current) {
+        setCepLoading(false)
+      }
+    }
+  }
+
+  const handleCepChange = (e) => {
+    const formatted = formatCep(e.target.value)
+    const digits = cepDigits(formatted)
+
+    if (digits !== lastFetchedCepRef.current) {
+      lastFetchedCepRef.current = ''
+      cepRequestIdRef.current += 1
+      setCepLoading(false)
+    }
+
+    setCepError(null)
+    setFormData((prev) => ({ ...prev, cep: formatted }))
+
+    if (digits.length === 8) {
+      lookupCep(formatted)
+    }
+  }
+
+  const handleCepBlur = () => {
+    const digits = cepDigits(formData.cep)
+    if (digits.length === 8 && digits !== lastFetchedCepRef.current) {
+      lookupCep(formData.cep)
+    }
+  }
+
   const handleStep1Submit = (e) => {
     e.preventDefault()
     if (validateStep1(formData)) setStep(2)
@@ -480,9 +550,23 @@ export default function CheckoutPage() {
                       autoComplete="postal-code"
                       placeholder="00000-000"
                       value={formData.cep}
-                      onChange={handleChange}
+                      onChange={handleCepChange}
+                      onBlur={handleCepBlur}
+                      maxLength={9}
                       required
+                      aria-invalid={!!cepError}
+                      aria-describedby={cepError || cepLoading ? 'cep-status' : undefined}
                     />
+                    {cepLoading && (
+                      <InfoText id="cep-status" style={{ margin: 0 }}>
+                        Buscando endereço…
+                      </InfoText>
+                    )}
+                    {cepError && !cepLoading && (
+                      <InfoText id="cep-status" role="alert" style={{ color: '#b91c1c', margin: 0 }}>
+                        {cepError}
+                      </InfoText>
+                    )}
                   </Field>
                   <Field>
                     <Label htmlFor="rua">Rua</Label>
@@ -500,6 +584,7 @@ export default function CheckoutPage() {
                     <Field>
                       <Label htmlFor="numero">Número</Label>
                       <Input
+                        ref={numeroInputRef}
                         id="numero"
                         name="numero"
                         type="text"
@@ -549,7 +634,7 @@ export default function CheckoutPage() {
                       />
                     </Field>
                   </Row>
-                  <SubmitButton type="submit" disabled={!validateStep2(formData)}>
+                  <SubmitButton type="submit" disabled={!validateStep2(formData) || cepLoading}>
                     Continuar
                   </SubmitButton>
                 </Form>

@@ -3,14 +3,23 @@ import styled from 'styled-components'
 export const StyledCategoryCard = styled.article`
   position: relative;
   display: block;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
-  border-radius: 14px;
-  border: 1px solid var(--color-border);
-  box-shadow: 0 2px 12px rgba(61, 50, 41, 0.05);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--color-bg);
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s ease;
 
   @media (min-width: 768px) {
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 5;
+  }
+
+  @media (max-width: 767px) {
+    &:active {
+      opacity: 0.94;
+    }
   }
 `
 
@@ -18,10 +27,16 @@ export const CardImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.45s ease;
 
   ${StyledCategoryCard}:hover & {
-    transform: scale(1.05);
+    transform: scale(1.03);
+  }
+
+  @media (hover: none) {
+    ${StyledCategoryCard}:hover & {
+      transform: none;
+    }
   }
 `
 
@@ -30,26 +45,30 @@ export const CardOverlay = styled.div`
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(74, 63, 53, 0.55) 0%,
-    rgba(74, 63, 53, 0.15) 45%,
-    transparent 100%
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.08) 35%,
+    transparent 65%
   );
+  pointer-events: none;
 `
 
 export const CardTitle = styled.span`
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  right: 1rem;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
+  bottom: 0.85rem;
+  left: 0.85rem;
+  right: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: #fff;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  line-height: 1.3;
 
   @media (min-width: 768px) {
-    font-size: 1.35rem;
-    bottom: 1.25rem;
-    left: 1.25rem;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    font-size: 0.875rem;
   }
 `

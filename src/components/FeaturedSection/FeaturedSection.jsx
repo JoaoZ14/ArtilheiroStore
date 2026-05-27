@@ -3,7 +3,13 @@ import ProductCard from '../ProductCard/ProductCard'
 import ProductCardSkeleton from '../ProductCardSkeleton/ProductCardSkeleton'
 import ErrorState from '../ErrorState/ErrorState'
 import { productService } from '../../services/api/productService'
-import { StyledSection, SectionContainer, SectionTitle, ProductsGrid } from './FeaturedSection.styled'
+import {
+  StyledSection,
+  SectionContainer,
+  SectionTitle,
+  SectionHint,
+  HighlightRail,
+} from './FeaturedSection.styled'
 
 const RECENT_LIMIT = 8
 
@@ -53,7 +59,8 @@ export default function FeaturedSection() {
     <StyledSection>
       <SectionContainer>
         <SectionTitle>Novidades da temporada</SectionTitle>
-        <ProductsGrid>
+        <SectionHint>Arraste para ver mais</SectionHint>
+        <HighlightRail>
           {loading ? (
             Array.from({ length: RECENT_LIMIT }, (_, i) => (
               <ProductCardSkeleton key={i} />
@@ -74,7 +81,7 @@ export default function FeaturedSection() {
               />
             ))
           )}
-        </ProductsGrid>
+        </HighlightRail>
       </SectionContainer>
     </StyledSection>
   )

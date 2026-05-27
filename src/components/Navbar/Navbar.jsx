@@ -28,7 +28,7 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { openMiniCart, itemCount } = useCart()
+  const { itemCount } = useCart()
 
   useEffect(() => {
     const q = searchParams.get('q')
@@ -85,10 +85,10 @@ export default function Navbar() {
         <NavActions>
           <CartButtonWrap>
             <IconButton
-              as="button"
-              type="button"
-              onClick={openMiniCart}
+              as={NavLink}
+              to="/carrinho"
               aria-label={`Carrinho com ${itemCount} itens`}
+              onClick={() => setMobileOpen(false)}
             >
               <IconBag size={22} aria-hidden />
             </IconButton>
