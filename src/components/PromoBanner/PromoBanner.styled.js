@@ -17,6 +17,7 @@ export const BannerImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center right;
 `
 
 export const BannerOverlay = styled.div`
@@ -24,8 +25,8 @@ export const BannerOverlay = styled.div`
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(0, 0, 0, 0.2) 60%,
+    rgba(74, 63, 53, 0.65) 0%,
+    rgba(74, 63, 53, 0.25) 55%,
     transparent 100%
   );
 `
@@ -50,8 +51,11 @@ export const BannerContent = styled.div`
 `
 
 export const BannerTitle = styled.h2`
+  font-family: var(--font-display);
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   margin-bottom: 0.5rem;
@@ -62,9 +66,17 @@ export const BannerTitle = styled.h2`
 `
 
 export const BannerSubtitle = styled.p`
+  font-family: var(--font-body);
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: 1.25rem;
+  max-width: 28rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.1rem;
+  }
 `
 
 export const BannerCta = styled.a`
@@ -73,12 +85,12 @@ export const BannerCta = styled.a`
   font-size: 0.95rem;
   font-weight: 600;
   color: #fff;
-  background: #c41e3a;
-  border-radius: 6px;
+  background: var(--color-primary);
+  border-radius: 24px;
   transition: background 0.2s, transform 0.2s;
 
   &:hover {
-    background: #a01830;
+    background: var(--color-primary-hover);
     transform: translateY(-1px);
   }
 `

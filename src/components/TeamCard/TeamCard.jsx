@@ -2,8 +2,12 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   StyledTeamCard,
+  CardImageWrap,
   TeamCardImage,
+  CardOverlay,
+  CardBody,
   TeamCardName,
+  CardCta,
 } from './TeamCard.styled'
 
 export default function TeamCard({ name, image, link, fallbackImage }) {
@@ -15,8 +19,14 @@ export default function TeamCard({ name, image, link, fallbackImage }) {
 
   return (
     <StyledTeamCard as={Link} to={link}>
-      <TeamCardImage src={src} alt={name} onError={handleError} />
-      <TeamCardName>{name}</TeamCardName>
+      <CardImageWrap>
+        <TeamCardImage src={src} alt={name} onError={handleError} />
+        <CardOverlay data-overlay>Explorar</CardOverlay>
+      </CardImageWrap>
+      <CardBody>
+        <TeamCardName>{name}</TeamCardName>
+        <CardCta data-cta>Ver linha →</CardCta>
+      </CardBody>
     </StyledTeamCard>
   )
 }

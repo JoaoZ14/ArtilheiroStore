@@ -39,7 +39,11 @@ export default function ProductCard({ name, price, originalPrice, image, imageHo
         {badge && (
           <CardBadge
             $type={
-              badge === 'Promo' ? 'promo' : badge === 'Retrô' ? 'retro' : 'new'
+              badge === 'Promo'
+                ? 'promo'
+                : badge === 'Edição' || badge === 'Retrô'
+                  ? 'edicao'
+                  : 'new'
             }
           >
             {badge}

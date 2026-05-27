@@ -109,12 +109,12 @@ export const ItemRemoveButton = styled.button`
   -webkit-tap-highlight-color: transparent;
 
   &:hover {
-    color: #c41e3a;
-    background: rgba(196, 30, 58, 0.08);
+    color: var(--color-primary);
+    background: rgba(166, 124, 82, 0.08);
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 

@@ -31,7 +31,7 @@ export const SummaryHeader = styled.button`
   -webkit-tap-highlight-color: transparent;
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 

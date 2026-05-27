@@ -7,7 +7,7 @@ export const CtaButton = styled.button`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: ${({ $disabled }) => ($disabled ? '#9ca3af' : '#c41e3a')};
+  background: ${({ $disabled }) => ($disabled ? '#9ca3af' : 'var(--color-primary)')};
   border: none;
   border-radius: 8px;
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
@@ -23,7 +23,7 @@ export const CtaButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `

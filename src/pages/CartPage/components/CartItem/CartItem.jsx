@@ -85,7 +85,7 @@ export default function CartItem({ item, onUpdateQuantity, onRemove }) {
           <TrashIcon />
         </ItemRemoveButton>
         {confirmRemove && (
-          <span style={{ fontSize: '0.75rem', color: '#c41e3a', fontWeight: 600 }}>
+          <span style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 600 }}>
             Clique de novo para remover
           </span>
         )}

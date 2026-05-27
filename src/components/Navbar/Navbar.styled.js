@@ -6,15 +6,15 @@ export const StyledNavbar = styled.nav`
   left: 0;
   right: 0;
   z-index: 1000;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid #eee;
+  background: var(--color-surface);
+  box-shadow: 0 1px 8px rgba(61, 50, 41, 0.06);
+  border-bottom: 1px solid var(--color-border);
   transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 
   @media (max-width: 991px) {
     background: #fff;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    border-bottom-color: #eee;
+    border-bottom-color: var(--color-border);
   }
 `
 
@@ -32,7 +32,7 @@ export const NavContainer = styled.div`
 
   @media (min-width: 768px) {
     padding: 0 2rem;
-    min-height: 85px;
+    min-height: 96px;
     gap: 2rem;
   }
 `
@@ -42,22 +42,6 @@ export const Logo = styled.span`
   align-items: center;
   flex-shrink: 0;
   min-width: 0;
-`
-
-export const LogoImage = styled.img`
-  height: 56px;
-  width: auto;
-  max-height: 72px;
-  object-fit: contain;
-  transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 0.85;
-  }
-
-  @media (min-width: 768px) {
-    height: 85px;
-  }
 `
 
 export const NavMenu = styled.ul`
@@ -79,17 +63,17 @@ export const NavItem = styled.li`
     padding: 0.5rem 0.75rem;
     font-size: 0.9rem;
     font-weight: 500;
-    color: #333;
-    border-radius: 4px;
+    color: var(--color-text);
+    border-radius: 6px;
     transition: color 0.2s, background 0.2s;
 
     &:hover {
-      color: #c41e3a;
-      background: rgba(196, 30, 58, 0.06);
+      color: var(--color-primary);
+      background: var(--color-primary-soft);
     }
 
     &.active {
-      color: #c41e3a;
+      color: var(--color-primary);
       font-weight: 600;
     }
   }
@@ -102,14 +86,14 @@ export const SearchForm = styled.form`
   width: 100%;
   min-height: 44px;
   height: 44px;
-  background: #f5f5f5;
-  border-radius: 8px;
+  background: var(--color-bg);
+  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border);
 
   &:focus-within {
-    border-color: #c41e3a;
-    background: #fff;
+    border-color: var(--color-primary);
+    background: var(--color-surface);
   }
 
   @media (max-width: 991px) {
@@ -131,12 +115,12 @@ export const SearchInput = styled.input`
   height: 100%;
   padding: 0 0.75rem;
   font-size: 0.9rem;
-  color: #1a1a1a;
+  color: var(--color-text);
   background: transparent;
   border: none;
 
   &::placeholder {
-    color: #6b7280;
+    color: var(--color-text-muted);
   }
 
   &:focus {
@@ -153,14 +137,19 @@ export const SearchSubmit = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--color-text-muted);
   background: transparent;
   border: none;
   cursor: pointer;
   transition: color 0.2s;
 
+  & > svg {
+    width: 20px;
+    height: 20px;
+  }
+
   &:hover {
-    color: #c41e3a;
+    color: var(--color-primary);
   }
 
   @media (min-width: 992px) {
@@ -206,7 +195,7 @@ export const CartBadge = styled.span`
   font-size: 0.6875rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border-radius: 9px;
   display: flex;
   align-items: center;
@@ -221,21 +210,26 @@ export const IconButton = styled.a`
   min-height: 44px;
   width: 44px;
   height: 44px;
-  color: #333;
+  color: var(--color-text);
   border-radius: 8px;
   transition: color 0.2s, background 0.2s;
 
+  & > svg {
+    width: 22px;
+    height: 22px;
+  }
+
   &:hover {
-    color: #c41e3a;
-    background: rgba(196, 30, 58, 0.06);
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
   }
 
   @media (max-width: 991px) {
-    color: #333;
+    color: var(--color-text);
 
     &:hover {
-      color: #c41e3a;
-      background: rgba(196, 30, 58, 0.06);
+      color: var(--color-primary);
+      background: var(--color-primary-soft);
     }
   }
 
@@ -268,13 +262,18 @@ export const MobileMenuButton = styled.button`
   min-height: 44px;
   width: 44px;
   height: 44px;
-  color: #333;
+  color: var(--color-text);
   background: transparent;
   border-radius: 8px;
   transition: color 0.2s;
 
+  & > svg {
+    width: 24px;
+    height: 24px;
+  }
+
   @media (max-width: 991px) {
-    color: #333;
+    color: var(--color-text);
   }
 
   @media (min-width: 992px) {
@@ -285,8 +284,8 @@ export const MobileMenuButton = styled.button`
 export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border-top: ${({ $open }) => ($open ? '1px solid #eee' : 'none')};
+  background: var(--color-surface);
+  border-top: ${({ $open }) => ($open ? '1px solid var(--color-border)' : 'none')};
   padding: ${({ $open }) => ($open ? '1rem' : '0')};
   max-height: ${({ $open }) => ($open ? '85vh' : '0')};
   min-height: 0;
@@ -300,12 +299,12 @@ export const MobileMenu = styled.div`
     padding: 0.875rem 1rem;
     min-height: 44px;
     font-weight: 500;
-    color: #333;
+    color: var(--color-text);
     border-radius: 6px;
 
     &:hover {
-      background: rgba(196, 30, 58, 0.06);
-      color: #c41e3a;
+      background: var(--color-primary-soft);
+      color: var(--color-primary);
     }
   }
 
@@ -316,7 +315,7 @@ export const MobileMenu = styled.div`
 
 export const MobileSearchWrap = styled.div`
   padding: 0 0 0.75rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border);
   margin-bottom: 0.75rem;
 
   @media (min-width: 992px) {

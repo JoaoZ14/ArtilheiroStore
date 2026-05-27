@@ -52,7 +52,7 @@ export const CheckoutButton = styled.button`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -73,7 +73,7 @@ export const CheckoutButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `

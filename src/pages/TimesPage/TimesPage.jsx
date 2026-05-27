@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
-import TeamCard from '../../components/TeamCard/TeamCard'
+import CategoryCard from '../../components/CategoryCard/CategoryCard'
+import {
+  categories,
+  heroData,
+  COLLECTION_COVERS,
+  HAT_COLLECTION_ORDER,
+} from '../../data/mockData'
 import { productService } from '../../services/api/productService'
 import {
   StyledTimesPage,
@@ -9,85 +15,106 @@ import {
   TimesHeaderImage,
   TimesHeaderOverlay,
   TimesHeaderContent,
+  TimesHeaderEyebrow,
   TimesHeaderTitle,
   TimesHeaderSubtitle,
+  HeaderCta,
   TimesMain,
   SectionContainer,
+  StylesSection,
+  StylesSectionTitle,
+  StylesSectionHint,
+  StylesGrid,
   LeagueSection,
+  CollectionFeatured,
+  CollectionFeaturedImage,
+  CollectionFeaturedOverlay,
+  CollectionFeaturedContent,
   LeagueTitle,
-  TeamsGrid,
+  CollectionDescription,
+  FeaturedCta,
+  LineList,
+  LineLink,
+  StatusMessage,
+  SkeletonGrid,
+  SkeletonCard,
+  SkeletonImage,
+  SkeletonText,
 } from './TimesPage.styled'
-import { TEAM_IDS } from './TeamsIds'
 
-// Logos: API-Football (media.api-sports.io). Nome = exatamente como vem no produto.
-// IDs: https://dashboard.api-football.com/soccer/ids/teams
-const API_FOOTBALL_LOGO_BASE = 'https://media.api-sports.io/football/teams'
+const hatCategories = categories.filter((c) => c.slug.startsWith('chapeus'))
 
-// Fallback quando não houver ID em TEAM_IDS
-const TEAM_IMAGES_FALLBACK = {
-  Flamengo: '/times/Brasileirao/flamengo%20logo.jpg',
-  Corinthians: '/times/Brasileirao/corinthians%20logo.jpg',
-  Palmeiras: '/times/Brasileirao/Palmeiras.jpg',
-  'São Paulo': '/times/Brasileirao/SaoPaulo.jpg',
-  Santos: '/times/Brasileirao/Santos.jpg',
-  Grêmio: '/times/Brasileirao/Gremio.jpg',
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-')
 }
 
-function buildLeagues(products) {
-  const byLiga = {}
-  const seen = new Set()
+function buildCollections(products) {
+  const linesByLiga = {}
 
   for (const p of products) {
-    const liga = (p.liga || '').trim() || 'Outros'
-    if (!byLiga[liga]) byLiga[liga] = []
+    if (!p.category?.startsWith('chapeus')) continue
+    const liga = (p.liga || '').trim()
+    if (!liga) continue
+    if (!linesByLiga[liga]) linesByLiga[liga] = []
     const key = `${liga}-${p.team}`
-    if (seen.has(key)) continue
-    seen.add(key)
-
-    const teamId = TEAM_IDS[p.team]
-    const teamImage = teamId
-      ? `${API_FOOTBALL_LOGO_BASE}/${teamId}.png`
-      : TEAM_IMAGES_FALLBACK[p.team] || null
-
-    byLiga[liga].push({
+    if (linesByLiga[liga].some((item) => item.name === p.team)) continue
+    linesByLiga[liga].push({
       name: p.team,
-      image: teamImage || p.image,
-      fallbackImage: teamImage ? p.image : null,
       link: `/produtos?time=${encodeURIComponent(p.team)}`,
     })
   }
 
-  return Object.keys(byLiga)
-    .sort((a, b) => a.localeCompare(b))
-    .map((liga) => ({
-      id: liga,
+  return HAT_COLLECTION_ORDER.map((liga) => {
+    const cover = COLLECTION_COVERS[liga]
+    return {
+      id: slugify(liga),
       name: liga,
-      teams: byLiga[liga].sort((a, b) => a.name.localeCompare(b.name)),
-    }))
+      image: cover?.image ?? null,
+      categoryLink: cover?.link ?? `/produtos?liga=${encodeURIComponent(liga)}`,
+      description: cover?.description ?? '',
+      lines: (linesByLiga[liga] || []).sort((a, b) => a.name.localeCompare(b.name)),
+    }
+  })
+}
+
+function CollectionsSkeleton() {
+  return (
+    <SkeletonGrid aria-hidden="true">
+      {Array.from({ length: 3 }, (_, i) => (
+        <SkeletonCard key={i}>
+          <SkeletonImage />
+          <SkeletonText />
+        </SkeletonCard>
+      ))}
+    </SkeletonGrid>
+  )
 }
 
 export default function TimesPage() {
-  const [leagues, setLeagues] = useState([])
+  const [collections, setCollections] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     let isMounted = true
 
-    async function fetchTeams() {
+    async function fetchCollections() {
       try {
         const products = await productService.getAll()
         if (!isMounted) return
-        setLeagues(buildLeagues(products))
+        setCollections(buildCollections(products))
       } catch (error) {
-        console.error('Erro ao carregar times:', error)
-        setLeagues([])
+        console.error('Erro ao carregar coleções:', error)
+        setCollections(buildCollections([]))
       } finally {
         if (isMounted) setIsLoading(false)
       }
     }
 
-    fetchTeams()
-
+    fetchCollections()
     return () => {
       isMounted = false
     }
@@ -97,45 +124,76 @@ export default function TimesPage() {
     <StyledTimesPage>
       <Navbar />
       <TimesHeader>
-        <TimesHeaderImage
-          src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80"
-          alt=""
-        />
+        <TimesHeaderImage src={heroData.image} alt="Chapéus country Glamour Country" />
         <TimesHeaderOverlay />
         <TimesHeaderContent>
-          <TimesHeaderTitle>Escolha seu time</TimesHeaderTitle>
+          <TimesHeaderEyebrow>Glamour Country</TimesHeaderEyebrow>
+          <TimesHeaderTitle>Nossa coleção</TimesHeaderTitle>
           <TimesHeaderSubtitle>
-            Clique no time para ver as camisas disponíveis
+            Chapéus femininos por estilo country. Escolha a classificação e encontre o
+            seu modelo.
           </TimesHeaderSubtitle>
+          <HeaderCta to="/produtos">Ver todos os chapéus</HeaderCta>
         </TimesHeaderContent>
       </TimesHeader>
 
       <TimesMain>
         <SectionContainer>
+          <StylesSection aria-labelledby="estilos-title">
+            <StylesSectionTitle id="estilos-title">Por estilo</StylesSectionTitle>
+            <StylesSectionHint>
+              Palha, aba larga, feltro e clássicos — as classificações da loja.
+            </StylesSectionHint>
+            <StylesGrid>
+              {hatCategories.map((category) => (
+                <CategoryCard
+                  key={category.id}
+                  title={category.title}
+                  image={category.image}
+                  link={category.link}
+                />
+              ))}
+            </StylesGrid>
+          </StylesSection>
+
           {isLoading ? (
-            <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>
-              Carregando times...
-            </p>
-          ) : leagues.length === 0 ? (
-            <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>
-              Nenhum time disponível no momento.
-            </p>
+            <CollectionsSkeleton />
           ) : (
-            leagues.map((league) => (
-            <LeagueSection key={league.id}>
-              <LeagueTitle>{league.name}</LeagueTitle>
-              <TeamsGrid>
-                {league.teams.map((team) => (
-                  <TeamCard
-                    key={team.name}
-                    name={team.name}
-                    image={team.image}
-                    link={team.link}
-                    fallbackImage={team.fallbackImage ?? undefined}
-                  />
-                ))}
-              </TeamsGrid>
-            </LeagueSection>
+            collections.map((collection) => (
+              <LeagueSection
+                key={collection.id}
+                id={`coleção-${collection.id}`}
+                aria-labelledby={`titulo-${collection.id}`}
+              >
+                <CollectionFeatured to={collection.categoryLink}>
+                  {collection.image && (
+                    <CollectionFeaturedImage
+                      src={collection.image}
+                      alt={`Chapéus ${collection.name}`}
+                    />
+                  )}
+                  <CollectionFeaturedOverlay />
+                  <CollectionFeaturedContent>
+                    <LeagueTitle id={`titulo-${collection.id}`}>
+                      {collection.name}
+                    </LeagueTitle>
+                    {collection.description && (
+                      <CollectionDescription>{collection.description}</CollectionDescription>
+                    )}
+                    <FeaturedCta>Ver coleção →</FeaturedCta>
+                  </CollectionFeaturedContent>
+                </CollectionFeatured>
+
+                {collection.lines.length > 0 && (
+                  <LineList aria-label={`Linhas ${collection.name}`}>
+                    {collection.lines.map((line) => (
+                      <li key={line.name}>
+                        <LineLink to={line.link}>{line.name}</LineLink>
+                      </li>
+                    ))}
+                  </LineList>
+                )}
+              </LeagueSection>
             ))
           )}
         </SectionContainer>

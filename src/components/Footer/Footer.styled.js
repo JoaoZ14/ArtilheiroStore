@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
 export const StyledFooter = styled.footer`
-  background: #1a1a1a;
-  color: #aaa;
+  background: var(--color-footer-bg);
+  color: var(--color-footer-text);
   padding: 3rem 0 2rem;
 
   @media (min-width: 768px) {
@@ -23,22 +23,13 @@ export const FooterContainer = styled.div`
 export const FooterLogoWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 `
 
 export const FooterLogoLink = styled.a`
   display: inline-block;
   line-height: 0;
-`
-
-export const FooterLogoImage = styled.img`
-  height: 200px !important;
-  width: auto;
-  object-fit: contain;
-
-  @media (min-width: 768px) {
-    height: 200px;
-  }
+  text-decoration: none;
 `
 
 export const FooterGrid = styled.div`
@@ -56,11 +47,11 @@ export const FooterGrid = styled.div`
 export const FooterColumn = styled.div``
 
 export const ColumnTitle = styled.h3`
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  color: #F5EDE4;
+  letter-spacing: 0.1em;
   margin-bottom: 1rem;
 `
 
@@ -72,7 +63,7 @@ export const ColumnList = styled.ul`
 
 export const ColumnLink = styled.a`
   font-size: 0.9rem;
-  color: #aaa;
+  color: var(--color-footer-text);
   transition: color 0.2s;
 
   &:hover {
@@ -91,10 +82,16 @@ export const SocialLink = styled.a`
   justify-content: center;
   width: 40px;
   height: 40px;
-  color: #aaa;
+  color: var(--color-footer-text);
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   transition: color 0.2s, background 0.2s;
+
+  & > svg {
+    width: 18px;
+    height: 18px;
+  }
 
   &:hover {
     color: #fff;
@@ -104,8 +101,8 @@ export const SocialLink = styled.a`
 
 export const Copyright = styled.p`
   font-size: 0.8rem;
-  color: #666;
+  color: rgba(212, 201, 188, 0.65);
   text-align: center;
   padding-top: 2rem;
-  border-top: 1px solid #333;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 `

@@ -9,7 +9,7 @@ import {
 
 const DEFAULT_ITEMS = [
   { label: 'Home', path: '/' },
-  { label: 'Camisas', path: '/produtos' },
+  { label: 'Produtos', path: '/produtos' },
 ]
 
 export default function Breadcrumb({ items = DEFAULT_ITEMS, current }) {

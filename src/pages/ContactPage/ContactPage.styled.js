@@ -94,11 +94,11 @@ export const ContactCardLink = styled.a`
   color: inherit;
 
   &:hover {
-    color: #c41e3a;
+    color: var(--color-primary);
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
     border-radius: 8px;
   }
@@ -190,4 +190,9 @@ export const ContactIcon = styled.span`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  & > svg {
+    width: 20px;
+    height: 20px;
+  }
 `

@@ -15,7 +15,7 @@ export default function PromoBanner() {
 
   return (
     <StyledPromoBanner>
-      <BannerImage src={image} alt="" />
+      <BannerImage src={image} alt="Chapéus e acessórios country Glamour Country" />
       <BannerOverlay />
       <BannerContent>
         <BannerTitle>{title}</BannerTitle>

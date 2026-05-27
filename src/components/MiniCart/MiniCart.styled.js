@@ -74,7 +74,7 @@ export const CloseButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 
@@ -156,7 +156,7 @@ export const PrimaryButton = styled.button`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -172,7 +172,7 @@ export const PrimaryButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `
@@ -183,20 +183,20 @@ export const SecondaryButton = styled.button`
   height: 48px;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #c41e3a;
+  color: var(--color-primary);
   background: transparent;
-  border: 2px solid #c41e3a;
+  border: 2px solid var(--color-primary);
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 
   &:hover {
-    background: rgba(196, 30, 58, 0.08);
+    background: rgba(166, 124, 82, 0.08);
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `
@@ -208,7 +208,7 @@ export const ExploreButton = styled.button`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -224,7 +224,7 @@ export const ExploreButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `

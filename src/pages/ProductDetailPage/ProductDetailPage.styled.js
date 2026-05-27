@@ -83,7 +83,7 @@ export const NotFoundText = styled.p`
 `
 
 export const NotFoundLink = styled(Link)`
-  color: #c41e3a;
+  color: var(--color-primary);
   font-weight: 600;
   text-decoration: none;
 

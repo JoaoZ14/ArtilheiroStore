@@ -102,8 +102,8 @@ export const Input = styled.input`
 
   &:focus {
     outline: none;
-    border-color: #c41e3a;
-    box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.15);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.15);
   }
 
   &:disabled {
@@ -130,7 +130,7 @@ export const SubmitButton = styled.button`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -155,7 +155,7 @@ export const SubmitButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `
@@ -176,22 +176,22 @@ export const PaymentOption = styled.label`
   gap: 0.75rem;
   padding: 1rem;
   min-height: 44px;
-  border: 2px solid ${({ $selected }) => ($selected ? '#c41e3a' : '#e5e7eb')};
+  border: 2px solid ${({ $selected }) => ($selected ? 'var(--color-primary)' : '#e5e7eb')};
   border-radius: 8px;
   cursor: pointer;
-  background: ${({ $selected }) => ($selected ? 'rgba(196, 30, 58, 0.04)' : '#fff')};
+  background: ${({ $selected }) => ($selected ? 'rgba(166, 124, 82, 0.04)' : '#fff')};
   transition: border-color 0.2s, background 0.2s;
   -webkit-tap-highlight-color: transparent;
 
   &:hover {
-    border-color: ${({ $selected }) => ($selected ? '#c41e3a' : '#d1d5db')};
+    border-color: ${({ $selected }) => ($selected ? 'var(--color-primary)' : '#d1d5db')};
   }
 `
 
 export const Radio = styled.input`
   width: 20px;
   height: 20px;
-  accent-color: #c41e3a;
+  accent-color: var(--color-primary);
 `
 
 export const SummaryCol = styled.div`
@@ -217,7 +217,7 @@ export const StepDot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${({ $active }) => ($active ? '#c41e3a' : '#e5e7eb')};
+  background: ${({ $active }) => ($active ? 'var(--color-primary)' : '#e5e7eb')};
   transition: background 0.2s;
 `
 
@@ -286,15 +286,15 @@ export const CopyButton = styled.button`
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #c41e3a;
+  color: var(--color-primary);
   background: #fff;
-  border: 1px solid #c41e3a;
+  border: 1px solid var(--color-primary);
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background: #c41e3a;
+    background: var(--color-primary);
     color: #fff;
   }
 `
@@ -307,7 +307,7 @@ export const BoletoLink = styled.a`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border-radius: 8px;
   text-decoration: none;
   transition: background 0.2s;

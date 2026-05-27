@@ -88,7 +88,7 @@ export default function ProductInfo({
 
       <QuickInfo
         items={[
-          ...(product?.liga ? [{ icon: '🏆', label: 'Liga', text: product.liga }] : []),
+          ...(product?.liga ? [{ icon: '🌾', label: 'Coleção', text: product.liga }] : []),
           { icon: '◆', label: 'Material', text: product?.material || '100% Poliéster' },
           { icon: '✈', label: 'Envio', text: product?.shipping || 'Envio em até 48h' },
           { icon: '↔', label: 'Troca', text: product?.exchange || 'Troca fácil em até 7 dias' },

@@ -13,7 +13,7 @@ export const ErrorIcon = styled.div`
   height: 64px;
   margin: 0 auto 1rem;
   background: #fef2f2;
-  color: #c41e3a;
+  color: var(--color-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -48,14 +48,14 @@ export const RetryButton = styled.button`
   font-size: 0.95rem;
   font-weight: 600;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s, opacity 0.2s;
 
   &:hover:not(:disabled) {
-    background: #a01830;
+    background: var(--color-primary-hover);
   }
 
   &:disabled {
@@ -67,7 +67,7 @@ export const RetryButton = styled.button`
 export const BackLink = styled(Link)`
   font-size: 0.9rem;
   font-weight: 600;
-  color: #c41e3a;
+  color: var(--color-primary);
   text-decoration: none;
 
   &:hover {

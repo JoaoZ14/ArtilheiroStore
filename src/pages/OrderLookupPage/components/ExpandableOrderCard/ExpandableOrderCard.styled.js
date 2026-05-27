@@ -35,7 +35,7 @@ export const ExpandableHeader = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `

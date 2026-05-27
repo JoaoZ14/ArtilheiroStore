@@ -29,11 +29,11 @@ import {
 const RELATED_COUNT = 4
 
 function getBreadcrumbItems(product) {
-  if (!product) return [{ label: 'Home', path: '/' }, { label: 'Camisas', path: '/produtos' }]
+  if (!product) return [{ label: 'Home', path: '/' }, { label: 'Produtos', path: '/produtos' }]
   const ligaLabel = product.liga || 'Produtos'
   return [
     { label: 'Home', path: '/' },
-    { label: 'Camisas', path: '/produtos' },
+    { label: 'Produtos', path: '/produtos' },
     { label: ligaLabel, path: `/produtos?liga=${encodeURIComponent(ligaLabel)}` },
   ]
 }

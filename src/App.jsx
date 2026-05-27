@@ -1,4 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from 'react-router-dom'
+
+function TimesRedirect() {
+  return <Navigate to="/chapeus" replace />
+}
+
+function AgroRedirect() {
+  return <Navigate to="/country" replace />
+}
 import { CartProvider } from './context/CartContext'
 import { ToastProvider } from './context/ToastContext'
 import MiniCart from './components/MiniCart/MiniCart'
@@ -35,7 +43,10 @@ export default function App() {
           <MiniCart />
           <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/times" element={<TimesPage />} />
+          <Route path="/chapeus" element={<TimesPage />} />
+          <Route path="/times" element={<TimesRedirect />} />
+          <Route path="/country" element={<ProductListingPage />} />
+          <Route path="/agro" element={<AgroRedirect />} />
           <Route path="/produtos" element={<ProductListingPage />} />
           <Route path="/produto/:id" element={<ProductDetailPage />} />
           <Route path="/carrinho" element={<CartPage />} />

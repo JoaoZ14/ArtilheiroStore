@@ -27,24 +27,32 @@ export const PageHeader = styled.header`
 `
 
 export const PageTitle = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--color-primary);
   margin: 0 0 0.25rem;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
 
   @media (min-width: 768px) {
-    font-size: 1.75rem;
+    font-size: 2.25rem;
   }
 `
 
 export const PageSubtitle = styled.p`
-  font-size: 0.875rem;
-  color: #6b7280;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
   margin: 0;
-  line-height: 1.5;
-  font-weight: 400;
+  line-height: 1.65;
+  font-weight: 500;
+  max-width: 36rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+  }
 `
 
 export const Section = styled.section`
@@ -97,12 +105,19 @@ export const ValueItem = styled.div`
 
 export const ValueIconWrap = styled.span`
   flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #222;
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  border-radius: 10px;
+
+  & > svg {
+    width: 18px;
+    height: 18px;
+  }
 `
 
 export const ValueContent = styled.div`
@@ -182,7 +197,7 @@ export const CtaButton = styled(Link)`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -199,7 +214,7 @@ export const CtaButton = styled(Link)`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 

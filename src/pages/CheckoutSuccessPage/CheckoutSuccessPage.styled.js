@@ -104,7 +104,7 @@ export const BackLink = styled(Link)`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   text-decoration: none;
@@ -120,7 +120,7 @@ export const BackLink = styled(Link)`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 

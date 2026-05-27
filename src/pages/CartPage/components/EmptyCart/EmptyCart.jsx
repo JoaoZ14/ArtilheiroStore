@@ -22,7 +22,7 @@ export default function EmptyCart() {
       </EmptyIcon>
       <EmptyTitle>Seu carrinho está vazio</EmptyTitle>
       <EmptyText>
-        Adicione camisas do seu time e finalize sua compra quando quiser.
+        Adicione chapéus e acessórios ao carrinho e finalize quando quiser.
       </EmptyText>
       <EmptyLink to="/produtos">Voltar para a loja</EmptyLink>
     </EmptyWrap>

@@ -21,7 +21,9 @@ export const SectionContainer = styled.div`
 export const SectionTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-text);
   margin-bottom: 1.5rem;
   text-align: center;
 

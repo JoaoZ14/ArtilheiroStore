@@ -50,7 +50,7 @@ function getPlpKey(params, pathname) {
   const slug = params.slug
   if (slug) return slug
   const segment = pathname.replace(/^\//, '').split('/')[0]
-  return segment || 'times'
+  return segment || 'produtos'
 }
 
 function filterAndSortProducts(products, filters, sort, plpKey) {
@@ -62,6 +62,9 @@ function filterAndSortProducts(products, filters, sort, plpKey) {
   }
   if (config?.filterPromoOnly) {
     list = list.filter((p) => p.isPromo)
+  }
+  if (config?.filterHatsOnly) {
+    list = list.filter((p) => p.category?.startsWith('chapeus'))
   }
 
   if (filters.liga) {
@@ -127,7 +130,7 @@ export default function ProductListingPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { showError } = useToast()
   const plpKey = getPlpKey(params, pathname)
-  const config = plpConfig[plpKey] || plpConfig.times
+  const config = plpConfig[plpKey] || plpConfig.produtos
 
   const timeFromUrl = searchParams.get('time') || ''
   const ligaFromUrl = searchParams.get('liga') || ''
@@ -260,11 +263,11 @@ export default function ProductListingPage() {
             </MobileFilterToggle>
             <SidebarWrapper $open={sidebarOpen}>
               <FilterSection>
-                <FilterTitle>Liga</FilterTitle>
+                <FilterTitle>Coleção</FilterTitle>
                 <FilterSelect
                   value={filters.liga}
                   onChange={(e) => setFilter('liga', e.target.value)}
-                  aria-label="Filtrar por liga"
+                  aria-label="Filtrar por coleção"
                 >
                   <option value="">Todas</option>
                   {ligas.map((liga) => (
@@ -276,7 +279,7 @@ export default function ProductListingPage() {
               </FilterSection>
 
               <FilterSection>
-                <FilterTitle>Time</FilterTitle>
+                <FilterTitle>Linha</FilterTitle>
                 <div>
                   {teams.map((team) => (
                     <FilterOption key={team}>

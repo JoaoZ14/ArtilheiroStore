@@ -58,8 +58,11 @@ export const PLPHeaderContent = styled.div`
 `
 
 export const PLPHeaderTitle = styled.h1`
+  font-family: var(--font-display);
   font-size: 1.75rem;
-  font-weight: 700;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   margin-bottom: 0.5rem;
@@ -71,7 +74,10 @@ export const PLPHeaderTitle = styled.h1`
 `
 
 export const PLPHeaderSubtitle = styled.p`
-  font-size: 0.95rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.6;
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   margin: 0;
@@ -148,7 +154,7 @@ export const FilterSelect = styled.select`
 
   &:focus {
     outline: none;
-    border-color: #c41e3a;
+    border-color: var(--color-primary);
   }
 `
 
@@ -163,13 +169,13 @@ export const FilterOption = styled.label`
   transition: color 0.2s;
 
   &:hover {
-    color: #c41e3a;
+    color: var(--color-primary);
   }
 
   input {
     width: 16px;
     height: 16px;
-    accent-color: #c41e3a;
+    accent-color: var(--color-primary);
     cursor: pointer;
   }
 `
@@ -190,13 +196,13 @@ export const FilterChip = styled.button`
 
   &:hover {
     background: #eee;
-    border-color: #c41e3a;
-    color: #c41e3a;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 
   &.active {
-    background: #c41e3a;
-    border-color: #c41e3a;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
     color: #fff;
   }
 `
@@ -216,7 +222,7 @@ export const PriceInput = styled.input`
 
   &:focus {
     outline: none;
-    border-color: #c41e3a;
+    border-color: var(--color-primary);
   }
 `
 
@@ -270,7 +276,7 @@ export const SortSelect = styled.select`
 
   &:focus {
     outline: none;
-    border-color: #c41e3a;
+    border-color: var(--color-primary);
   }
 `
 
@@ -305,9 +311,9 @@ export const MobileFilterToggle = styled.button`
   padding: 0.6rem 1rem;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #c41e3a;
+  color: var(--color-primary);
   background: #fff;
-  border: 2px solid #c41e3a;
+  border: 2px solid var(--color-primary);
   border-radius: 6px;
   cursor: pointer;
   margin-bottom: 1rem;

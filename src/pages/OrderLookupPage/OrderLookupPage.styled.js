@@ -77,12 +77,12 @@ export const TabButton = styled.button`
   }
 
   &.active {
-    color: #c41e3a;
-    border-bottom-color: #c41e3a;
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `

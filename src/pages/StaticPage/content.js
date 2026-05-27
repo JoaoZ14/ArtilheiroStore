@@ -2,7 +2,7 @@ export const staticPages = {
   sobre: {
     title: 'Sobre nós',
     paragraphs: [
-      'A Artilheiro Store nasceu da paixão por futebol e pela vontade de levar camisas oficiais dos maiores clubes do Brasil e do mundo até você.',
+      'A Glamour Country nasceu do amor ao estilo country e da vontade de oferecer chapéus femininos e acessórios western com charme e delicadeza.',
       'Trabalhamos com produtos originais e qualidade garantida. Esta página está em construção. Em breve traremos mais informações sobre nossa história e nossa equipe.',
     ],
   },
@@ -16,7 +16,7 @@ export const staticPages = {
   'politica-de-privacidade': {
     title: 'Política de privacidade',
     paragraphs: [
-      'A Artilheiro Store respeita sua privacidade e está comprometida com a proteção dos seus dados pessoais.',
+      'A Glamour Country respeita sua privacidade e está comprometida com a proteção dos seus dados pessoais.',
       'Esta página está em construção. Em breve publicaremos nossa política completa de privacidade e uso de dados.',
     ],
   },
@@ -24,20 +24,20 @@ export const staticPages = {
     title: 'Termos de uso',
     paragraphs: [
       'Ao utilizar nosso site e serviços, você concorda com os termos aqui descritos.',
-      'Esta página está em construção. Em breve disponibilizaremos os termos completos de uso da Artilheiro Store.',
+      'Esta página está em construção. Em breve disponibilizaremos os termos completos de uso da Glamour Country.',
     ],
   },
   lojas: {
     title: 'Nossas lojas',
     paragraphs: [
-      'Encontre uma Artilheiro Store perto de você.',
+      'Encontre uma Glamour Country perto de você.',
       'Esta página está em construção. Em breve traremos endereços e horários de funcionamento.',
     ],
   },
   'trabalhe-conosco': {
     title: 'Trabalhe conosco',
     paragraphs: [
-      'Quer fazer parte do time Artilheiro Store? Confira nossas vagas abertas.',
+      'Quer fazer parte da Glamour Country? Confira nossas vagas abertas.',
       'Esta página está em construção. Em breve disponibilizaremos oportunidades de trabalho.',
     ],
   },

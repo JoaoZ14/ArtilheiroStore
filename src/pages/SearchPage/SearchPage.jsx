@@ -85,7 +85,7 @@ export default function SearchPage() {
           <EmptyWrap>
             <EmptyTitle>Digite algo para buscar</EmptyTitle>
             <EmptyText>
-              Use o campo de busca no topo da página para encontrar camisas, times ou categorias.
+              Use o campo de busca no topo da página para encontrar chapéus, acessórios ou coleções.
             </EmptyText>
             <BackLink to="/produtos">Voltar para a loja</BackLink>
           </EmptyWrap>

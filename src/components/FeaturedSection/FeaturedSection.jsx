@@ -52,7 +52,7 @@ export default function FeaturedSection() {
   return (
     <StyledSection>
       <SectionContainer>
-        <SectionTitle>Produtos mais recentes</SectionTitle>
+        <SectionTitle>Novidades da temporada</SectionTitle>
         <ProductsGrid>
           {loading ? (
             Array.from({ length: RECENT_LIMIT }, (_, i) => (

@@ -53,8 +53,8 @@ export const Input = styled.input`
 
   &:focus {
     outline: none;
-    border-color: #c41e3a;
-    box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.15);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.15);
   }
 
   &:disabled {
@@ -71,7 +71,7 @@ export const SubmitButton = styled.button`
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -96,7 +96,7 @@ export const SubmitButton = styled.button`
   }
 
   &:focus-visible {
-    outline: 2px solid #c41e3a;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 `

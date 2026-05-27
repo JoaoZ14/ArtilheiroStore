@@ -82,7 +82,7 @@ export const BackLink = styled(Link)`
   font-size: 0.95rem;
   font-weight: 600;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   border-radius: 8px;
   text-decoration: none;
   transition: background 0.2s;

@@ -1,126 +1,97 @@
 /**
- * Product Service - Comunicação com endpoints de produtos
+ * Product Service — modo mock (sem backend por enquanto)
  */
 
-import { httpClient } from './httpClient'
+import { allProducts, getProductDetail } from '../../data/mockData'
 
-/**
- * Normaliza dados da API para o formato esperado pelo frontend
- */
-function normalizeProduct(apiProduct) {
-  if (!apiProduct) return null
-  
-  // Normaliza sizes: pode vir como objeto { M: 12, G: 15 } ou array [{ label, stock }]
-  let sizes = []
-  let sizeStock = {}
-  
-  if (apiProduct.sizes) {
-    if (Array.isArray(apiProduct.sizes)) {
-      // Formato array: [{ label: "M", stock: 10 }]
-      sizes = apiProduct.sizes.map(s => s.label)
-      apiProduct.sizes.forEach(s => {
-        sizeStock[s.label] = s.stock || 0
-      })
-    } else if (typeof apiProduct.sizes === 'object') {
-      // Formato objeto: { M: 12, G: 15, GG: 6 }
-      sizes = Object.keys(apiProduct.sizes)
-      sizeStock = { ...apiProduct.sizes }
-    }
-  }
-  
-  // Pega primeira imagem como principal
-  const mainImage = apiProduct.images?.[0] || ''
-  const hoverImage = apiProduct.images?.[1] || mainImage
-  
-  // Galeria para PDP
-  const gallery = (apiProduct.images || []).map((src, index) => ({
-    src,
-    label: index === 0 ? 'Frente' : index === 1 ? 'Costas' : `Detalhe ${index}`
-  }))
-  
-  // Monta link para PDP
-  const link = `/produto/${apiProduct.id}`
-  
-  // Preço: se tiver promoPrice, ele vira o preço principal e price vira original (riscado)
-  const hasPromoPrice = apiProduct.promoPrice != null && apiProduct.promoPrice !== ''
-  const price = hasPromoPrice ? Number(apiProduct.promoPrice) : Number(apiProduct.price)
-  const originalPrice = hasPromoPrice
-    ? Number(apiProduct.price)
-    : (apiProduct.originalPrice != null ? Number(apiProduct.originalPrice) : null)
+function normalizeProduct(raw) {
+  if (!raw) return null
 
-  // Badge baseado em promoção ou novidade
-  let badge = null
-  if (apiProduct.isPromotion || hasPromoPrice) {
-    badge = 'Promo'
-  } else if (apiProduct.isNew) {
-    badge = 'Novo'
+  const sizes = raw.sizes || []
+  const sizeStock = raw.sizeStock || {}
+  if (!raw.sizeStock && sizes.length) {
+    sizes.forEach((s) => {
+      sizeStock[s] = 5
+    })
   }
-  
+
+  const mainImage = raw.image || ''
+  const hoverImage = raw.imageHover || mainImage
+  const gallery =
+    raw.gallery ||
+    [mainImage, hoverImage].filter(Boolean).map((src, index) => ({
+      src,
+      label: index === 0 ? 'Principal' : 'Detalhe',
+    }))
+
+  const hasPromo = raw.isPromo || raw.badge === 'Promo'
+  const price = Number(raw.price)
+  const originalPrice = raw.originalPrice != null ? Number(raw.originalPrice) : null
+
   return {
-    id: apiProduct.id,
-    name: apiProduct.name,
+    id: raw.id,
+    name: raw.name,
     price,
-    originalPrice: originalPrice ?? null,
+    originalPrice,
     image: mainImage,
     imageHover: hoverImage,
-    badge,
-    link,
-    team: apiProduct.team,
-    /** @type {string} Liga do produto (ex.: Brasileirão, Seleção, Libertadores) */
-    liga: (apiProduct.liga ?? apiProduct.league ?? '').trim() || null,
-    category: apiProduct.category || 'nacionais',
+    badge: raw.badge || (hasPromo ? 'Promo' : null),
+    link: raw.link || `/produto/${raw.id}`,
+    team: raw.team,
+    liga: (raw.liga ?? '').trim() || null,
+    category: raw.category || 'chapeus-palha',
     sizes,
     sizeStock,
-    isPromo: apiProduct.isPromotion || hasPromoPrice,
-    salesCount: apiProduct.salesCount || 0,
-    createdAt: apiProduct.createdAt || new Date().toISOString(),
-    // Campos extras para PDP
+    isPromo: hasPromo,
+    salesCount: raw.salesCount || 0,
+    createdAt: raw.createdAt || new Date().toISOString(),
     gallery,
-    material: apiProduct.material || '100% Poliéster',
-    shipping: apiProduct.shipping || 'Envio em até 48h',
-    exchange: apiProduct.exchange || 'Troca fácil em até 7 dias',
-    season: apiProduct.season,
-    frete_gratis: Boolean(apiProduct.frete_gratis ?? apiProduct.freteGratis),
+    material: raw.material || 'Materiais selecionados com cuidado',
+    shipping: raw.shipping || 'Envio em até 5 dias úteis',
+    exchange: raw.exchange || 'Troca fácil em até 7 dias',
+    season: raw.season,
+    frete_gratis: Boolean(raw.frete_gratis ?? raw.freteGratis),
   }
 }
 
-/**
- * Busca produtos com filtros opcionais (liga, category, team, search).
- * @param {{ liga?: string, category?: string, team?: string, search?: string }} params
- */
+function filterMockList(products, params = {}) {
+  let list = [...products]
+
+  if (params.liga) {
+    const ligaLower = params.liga.toLowerCase()
+    list = list.filter((p) => (p.liga || '').toLowerCase() === ligaLower)
+  }
+  if (params.category) {
+    list = list.filter((p) => p.category === params.category)
+  }
+  if (params.team) {
+    list = list.filter((p) => p.team === params.team)
+  }
+  if (params.search) {
+    const q = params.search.toLowerCase()
+    list = list.filter(
+      (p) =>
+        p.name?.toLowerCase().includes(q) ||
+        p.liga?.toLowerCase().includes(q) ||
+        p.team?.toLowerCase().includes(q) ||
+        p.category?.toLowerCase().includes(q)
+    )
+  }
+
+  return list.map(normalizeProduct)
+}
+
 export async function getAll(params = {}) {
-  try {
-    const query = new URLSearchParams()
-    if (params.liga) query.set('liga', params.liga)
-    if (params.category) query.set('category', params.category)
-    if (params.team) query.set('team', params.team)
-    if (params.search) query.set('search', params.search)
-    const qs = query.toString()
-    const url = qs ? `/api/products?${qs}` : '/api/products'
-    const data = await httpClient.get(url)
-
-    if (!Array.isArray(data)) {
-      throw new Error('Resposta inválida da API')
-    }
-
-    return data.map(normalizeProduct)
-  } catch (error) {
-    console.error('[ProductService] Erro ao buscar produtos:', error)
-    throw error
-  }
+  const filtered = filterMockList(allProducts, params)
+  return Promise.resolve(filtered)
 }
 
-/**
- * Busca produto por ID
- */
 export async function getById(id) {
-  try {
-    const data = await httpClient.get(`/api/products/${id}`)
-    return normalizeProduct(data)
-  } catch (error) {
-    console.error(`[ProductService] Erro ao buscar produto ${id}:`, error)
-    throw error
+  const detail = getProductDetail(id)
+  if (!detail) {
+    return Promise.reject(new Error('Produto não encontrado'))
   }
+  return Promise.resolve(normalizeProduct(detail))
 }
 
 export const productService = {

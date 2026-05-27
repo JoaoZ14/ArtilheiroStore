@@ -66,7 +66,7 @@ export const PromoBadge = styled.span`
   font-size: 0.75rem;
   font-weight: 700;
   color: #fff;
-  background: #c41e3a;
+  background: var(--color-primary);
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   text-transform: uppercase;
