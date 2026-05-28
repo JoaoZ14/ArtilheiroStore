@@ -1,0 +1,22 @@
+{
+  "name": "artilheiro-store-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Backend da Artilheiro Store — Fastify + pg + Mercado Pago",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js",
+    "db:migrate": "node db/migrate.js",
+    "db:seed": "node db/seed.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9",
+    "@supabase/supabase-js": "^2.106.2",
+    "dotenv": "^16",
+    "fastify": "^4",
+    "mercadopago": "^2",
+    "pg": "^8",
+    "resend": "^6.12.4"
+  }
+}

@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
-import {
-  heroData,
-  COLLECTION_COVERS,
-  HAT_COLLECTION_ORDER,
-} from '../../data/mockData'
-import { productService } from '../../services/api/productService'
+import { heroData, MOCK_COLLECTIONS } from '../../data/mockData'
+import { httpClient } from '../../services/api/httpClient'
+
+const USE_MOCK = import.meta.env.VITE_USE_MOCK_DATA === 'true'
 import {
   StyledTimesPage,
   TimesHeader,
@@ -42,33 +40,14 @@ function slugify(text) {
     .replace(/\s+/g, '-')
 }
 
-function buildCollections(products) {
-  const linesByLiga = {}
-
-  for (const p of products) {
-    if (!p.category?.startsWith('chapeus')) continue
-    const liga = (p.liga || '').trim()
-    if (!liga) continue
-    if (!linesByLiga[liga]) linesByLiga[liga] = []
-    const key = `${liga}-${p.team}`
-    if (linesByLiga[liga].some((item) => item.name === p.team)) continue
-    linesByLiga[liga].push({
-      name: p.team,
-      link: `/produtos?time=${encodeURIComponent(p.team)}`,
-    })
-  }
-
-  return HAT_COLLECTION_ORDER.map((liga) => {
-    const cover = COLLECTION_COVERS[liga]
-    return {
-      id: slugify(liga),
-      name: liga,
-      image: cover?.image ?? null,
-      categoryLink: cover?.link ?? `/produtos?liga=${encodeURIComponent(liga)}`,
-      description: cover?.description ?? '',
-      lines: (linesByLiga[liga] || []).sort((a, b) => a.name.localeCompare(b.name)),
-    }
-  })
+function apiCollectionsToView(apiCollections) {
+  return apiCollections.map((col) => ({
+    id: col.slug || slugify(col.name),
+    name: col.name,
+    image: col.image ?? null,
+    categoryLink: col.link ?? `/produtos?liga=${encodeURIComponent(col.name)}`,
+    description: col.description ?? '',
+  }))
 }
 
 function CollectionsSkeleton() {
@@ -89,22 +68,27 @@ export default function TimesPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    let isMounted = true
-
-    async function fetchCollections() {
-      try {
-        const products = await productService.getAll()
-        if (!isMounted) return
-        setCollections(buildCollections(products))
-      } catch (error) {
-        console.error('Erro ao carregar coleções:', error)
-        setCollections(buildCollections([]))
-      } finally {
-        if (isMounted) setIsLoading(false)
-      }
+    if (USE_MOCK) {
+      setCollections(apiCollectionsToView(MOCK_COLLECTIONS))
+      setIsLoading(false)
+      return
     }
 
-    fetchCollections()
+    let isMounted = true
+
+    httpClient.get('/api/collections')
+      .then((data) => {
+        if (!isMounted) return
+        setCollections(apiCollectionsToView(data))
+      })
+      .catch((err) => {
+        console.error('Erro ao carregar coleções:', err)
+        setCollections([])
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false)
+      })
+
     return () => {
       isMounted = false
     }
