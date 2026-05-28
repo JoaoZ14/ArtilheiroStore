@@ -31,7 +31,11 @@ export async function sendChatMessage(messages) {
     systemInstruction: `${STORE_SYSTEM_RULES}\n\n${buildStoreContext()}`,
   })
 
-  const history = messages.slice(0, -1).map((msg) => ({
+  const rawHistory = messages.slice(0, -1)
+  const firstUserIndex = rawHistory.findIndex((m) => m.role === 'user')
+  const normalizedHistory = firstUserIndex === -1 ? [] : rawHistory.slice(firstUserIndex)
+
+  const history = normalizedHistory.map((msg) => ({
     role: msg.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: msg.content }],
   }))
