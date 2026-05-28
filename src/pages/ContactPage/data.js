@@ -1,5 +1,5 @@
 /**
- * Dados de contato da Artilheiro Store.
+ * Dados de contato da Glamour Country.
  * Atualize com os canais oficiais da loja.
  */
 export const contactData = {

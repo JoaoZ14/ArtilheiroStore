@@ -3,6 +3,8 @@ import { CartProvider } from './context/CartContext'
 import { ToastProvider } from './context/ToastContext'
 import { AdminProvider, useAdmin } from './context/AdminContext'
 import Toast from './components/Toast/Toast'
+import CustomCursor from './components/CustomCursor/CustomCursor'
+import FloatingChat from './components/FloatingChat/FloatingChat'
 import LandingPage from './pages/LandingPage/LandingPage'
 import ProductListingPage from './pages/ProductListingPage/ProductListingPage'
 import LancamentosPage from './pages/LancamentosPage/LancamentosPage'
@@ -58,7 +60,9 @@ export default function App() {
       <AdminProvider>
         <ToastProvider>
           <CartProvider>
+            <CustomCursor />
             <Toast />
+            <FloatingChat />
             <Routes>
               {/* Loja pública */}
               <Route path="/" element={<LandingPage />} />
