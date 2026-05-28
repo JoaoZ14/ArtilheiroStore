@@ -2,7 +2,7 @@
  * Dados falsos para desenvolvimento/demo (VITE_USE_MOCK_DATA=true)
  */
 
-import { allProducts } from './mockData'
+import { allProducts, MOCK_FEEDBACK_IMAGE } from './mockData'
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -391,15 +391,13 @@ export function getMockCollections() {
 
 // ── Feedbacks ─────────────────────────────────────────────────────────────────
 
-const fbImg = (id) => `https://images.unsplash.com/photo-${id}?w=400&q=80&auto=format&fit=crop`
-
 export const MOCK_ADMIN_FEEDBACKS = [
-  { id: 1, imageUrl: fbImg('1496747611176-843222e1e57c'), caption: '"Simplesmente apaixonada! 😍" — Ana Paula, SP', active: true, displayOrder: 1 },
-  { id: 2, imageUrl: fbImg('1588850561407-ed78c282e89b'), caption: '"Qualidade excelente, vale muito!" — Márcia, MG', active: true, displayOrder: 2 },
-  { id: 3, imageUrl: fbImg('1515372039744-b8f02a3ae446'), caption: '"Já é meu terceiro pedido aqui 🤩" — Juliana, RJ', active: true, displayOrder: 3 },
-  { id: 4, imageUrl: fbImg('1594633312681-425c7b97ccd1'), caption: '"Muito mais bonito do que na foto! ✨" — Fernanda, RS', active: false, displayOrder: 4 },
-  { id: 5, imageUrl: fbImg('1521369909029-2afed882baee'), caption: '"Chapéu lindo, entrega rápida. Nota 10!" — Carolina, PR', active: true, displayOrder: 5 },
-  { id: 6, imageUrl: fbImg('1469474968028-56623f02e42e'), caption: '"Perfeito para o rodeio! Recebi muitos elogios 🎉" — Beatriz, GO', active: true, displayOrder: 6 },
+  { id: 1, imageUrl: MOCK_FEEDBACK_IMAGE, caption: 'Ana Paula, SP', active: true, displayOrder: 1 },
+  { id: 2, imageUrl: MOCK_FEEDBACK_IMAGE, caption: 'Márcia, MG', active: true, displayOrder: 2 },
+  { id: 3, imageUrl: MOCK_FEEDBACK_IMAGE, caption: 'Juliana, RJ', active: true, displayOrder: 3 },
+  { id: 4, imageUrl: MOCK_FEEDBACK_IMAGE, caption: 'Fernanda, RS', active: false, displayOrder: 4 },
+  { id: 5, imageUrl: MOCK_FEEDBACK_IMAGE, caption: 'Carolina, PR', active: true, displayOrder: 5 },
+  { id: 6, imageUrl: MOCK_FEEDBACK_IMAGE, caption: 'Beatriz, GO', active: true, displayOrder: 6 },
 ]
 
 export function getMockFeedbacks() {

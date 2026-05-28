@@ -634,47 +634,51 @@ export const footerData = {
 /** Compatibilidade com FeaturedSection antigo */
 export const featuredProducts = allProducts.slice(0, 8)
 
+/** Imagem de print (WhatsApp) usada nos feedbacks mock */
+export const MOCK_FEEDBACK_IMAGE =
+  'https://i.pinimg.com/736x/69/52/ec/6952eca24213a4aaf6d673f9d82087bb.jpg'
+
 /** Feedbacks de clientes — usados quando VITE_USE_MOCK_DATA=true */
 export const MOCK_FEEDBACKS = [
   {
     id: 1,
-    imageUrl: IMG.woman,
-    caption: '"Simplesmente apaixonada! O chapéu chegou em 3 dias e é ainda mais bonito pessoalmente 😍" — Ana Paula, SP',
+    imageUrl: MOCK_FEEDBACK_IMAGE,
+    caption: 'Ana Paula, SP',
     active: true,
     displayOrder: 1,
   },
   {
     id: 2,
-    imageUrl: IMG.hat1,
-    caption: '"Comprei para minha filha e ela AMOU. Qualidade excelente, vale muito cada centavo!" — Márcia, MG',
+    imageUrl: MOCK_FEEDBACK_IMAGE,
+    caption: 'Márcia, MG',
     active: true,
     displayOrder: 2,
   },
   {
     id: 3,
-    imageUrl: IMG.hat2,
-    caption: '"Já é meu terceiro pedido aqui. Atendimento incrível e produto sempre perfeito 🤩" — Juliana, RJ',
+    imageUrl: MOCK_FEEDBACK_IMAGE,
+    caption: 'Juliana, RJ',
     active: true,
     displayOrder: 3,
   },
   {
     id: 4,
-    imageUrl: IMG.hat3,
-    caption: '"Muito mais bonito do que na foto! Recomendo demais para quem curte estilo country ✨" — Fernanda, RS',
+    imageUrl: MOCK_FEEDBACK_IMAGE,
+    caption: 'Fernanda, RS',
     active: true,
     displayOrder: 4,
   },
   {
     id: 5,
-    imageUrl: IMG.hat4,
-    caption: '"Chapéu lindo, entrega rápida e embalagem muito caprichada. Nota 10!" — Carolina, PR',
+    imageUrl: MOCK_FEEDBACK_IMAGE,
+    caption: 'Carolina, PR',
     active: true,
     displayOrder: 5,
   },
   {
     id: 6,
-    imageUrl: IMG.field,
-    caption: '"Perfeito para o rodeio! Recebi muitos elogios, todo mundo perguntou onde comprei 🎉" — Beatriz, GO',
+    imageUrl: MOCK_FEEDBACK_IMAGE,
+    caption: 'Beatriz, GO',
     active: true,
     displayOrder: 6,
   },
