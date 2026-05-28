@@ -27,8 +27,6 @@ import {
   LeagueTitle,
   CollectionDescription,
   FeaturedCta,
-  LineList,
-  LineLink,
   StatusMessage,
   SkeletonGrid,
   SkeletonCard,
@@ -159,15 +157,6 @@ export default function TimesPage() {
                   </CollectionFeaturedContent>
                 </CollectionFeatured>
 
-                {collection.lines.length > 0 && (
-                  <LineList aria-label={`Linhas ${collection.name}`}>
-                    {collection.lines.map((line) => (
-                      <li key={line.name}>
-                        <LineLink to={line.link}>{line.name}</LineLink>
-                      </li>
-                    ))}
-                  </LineList>
-                )}
               </LeagueSection>
             ))
           )}

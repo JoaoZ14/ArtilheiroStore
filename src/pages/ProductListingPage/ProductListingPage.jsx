@@ -71,9 +71,6 @@ function filterAndSortProducts(products, filters, sort, plpKey) {
     const ligaLower = filters.liga.toLowerCase()
     list = list.filter((p) => (p.liga || '').toLowerCase() === ligaLower)
   }
-  if (filters.team) {
-    list = list.filter((p) => p.team === filters.team)
-  }
   if (filters.size) {
     list = list.filter((p) => p.sizes?.includes(filters.size))
   }
@@ -102,11 +99,6 @@ function filterAndSortProducts(products, filters, sort, plpKey) {
   return list
 }
 
-function getUniqueTeams(products) {
-  const teams = [...new Set(products.map((p) => p.team).filter(Boolean))]
-  return teams.sort((a, b) => a.localeCompare(b))
-}
-
 function getUniqueLigas(products) {
   const ligas = [...new Set(products.map((p) => p.liga).filter(Boolean))]
   return ligas.sort((a, b) => a.localeCompare(b))
@@ -118,7 +110,6 @@ function filterProductsBySearchTerm(products, term) {
   return products.filter(
     (p) =>
       p.name?.toLowerCase().includes(q) ||
-      p.team?.toLowerCase().includes(q) ||
       p.category?.toLowerCase().includes(q) ||
       p.liga?.toLowerCase().includes(q)
   )
@@ -132,14 +123,12 @@ export default function ProductListingPage() {
   const plpKey = getPlpKey(params, pathname)
   const config = plpConfig[plpKey] || plpConfig.produtos
 
-  const timeFromUrl = searchParams.get('time') || ''
   const ligaFromUrl = searchParams.get('liga') || ''
   const searchQuery = searchParams.get('q') ?? ''
 
   const [sort, setSort] = useState(config.sortDefault || 'bestseller')
   const [filters, setFilters] = useState({
     liga: ligaFromUrl,
-    team: timeFromUrl,
     size: '',
     promoOnly: config.filterPromoOnly || false,
     priceMin: '',
@@ -152,21 +141,19 @@ export default function ProductListingPage() {
   const [allProducts, setAllProducts] = useState([])
   const [retryCount, setRetryCount] = useState(0)
 
-  // Sincroniza filtros time/liga com a URL: ao ir para Lancamentos (sem params), limpa time e liga
+  // Sincroniza filtro liga com a URL
   useEffect(() => {
     setFilters((prev) => ({
       ...prev,
-      team: timeFromUrl,
       liga: ligaFromUrl,
     }))
-  }, [timeFromUrl, ligaFromUrl])
+  }, [ligaFromUrl])
 
   // Ao trocar de categoria (ex.: clicar em Lançamentos), limpa todos os filtros e aplica config da página
   useEffect(() => {
     setSort(config.sortDefault || 'bestseller')
     setFilters({
       liga: ligaFromUrl,
-      team: timeFromUrl,
       size: '',
       promoOnly: config.filterPromoOnly || false,
       priceMin: '',
@@ -184,7 +171,6 @@ export default function ProductListingPage() {
       try {
         const apiParams = {}
         if (filters.liga) apiParams.liga = filters.liga
-        if (filters.team) apiParams.team = filters.team
         if (searchQuery.trim()) apiParams.search = searchQuery.trim()
         const data = await productService.getAll(apiParams)
 
@@ -206,7 +192,7 @@ export default function ProductListingPage() {
 
     fetchProducts()
     return () => { isMounted = false }
-  }, [retryCount, filters.liga, filters.team, searchQuery])
+  }, [retryCount, filters.liga, searchQuery])
 
   // Aplicar filtros e ordenação quando mudarem
   useEffect(() => {
@@ -222,7 +208,6 @@ export default function ProductListingPage() {
     setRetryCount((c) => c + 1)
   }
 
-  const teams = useMemo(() => getUniqueTeams(allProducts), [allProducts])
   const ligas = useMemo(() => getUniqueLigas(allProducts), [allProducts])
 
   const setFilter = (key, value) => {
@@ -276,23 +261,6 @@ export default function ProductListingPage() {
                     </option>
                   ))}
                 </FilterSelect>
-              </FilterSection>
-
-              <FilterSection>
-                <FilterTitle>Linha</FilterTitle>
-                <div>
-                  {teams.map((team) => (
-                    <FilterOption key={team}>
-                      <input
-                        type="radio"
-                        name="team"
-                        checked={filters.team === team}
-                        onChange={() => setFilter('team', filters.team === team ? '' : team)}
-                      />
-                      {team}
-                    </FilterOption>
-                  ))}
-                </div>
               </FilterSection>
 
               <FilterSection>
